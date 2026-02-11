@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ORANGEW1N — БОНУСЫ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        /* ===== ПОЛНОСТЬЮ СТИЛЬ ИЗ INDEX (5).html ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #FF6B00;
+            --primary-dark: #FF4500;
+            --primary-light: #FF8C00;
+            --secondary: #00C2FF;
+            --success: #00C853;
+            --danger: #FF3D00;
+            --warning: #FF9800;
+            --bg-dark: #0A0A0A;
+            --bg-card: #111111;
+            --bg-sidebar: #0D0D0D;
+            --bg-header: #0A0A0A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #9B9B9B;
+            --border: #252525;
+            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
+            --bottom-nav: #0D0D0D;
+            --card-bg: #1A1A1A;
+            --bonus-gradient: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .app {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            background: var(--bg-dark);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        /* Шапка */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-mini {
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .balance-chip {
+            background: var(--card-bg);
+            border-radius: 100px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .balance-chip i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .avatar-btn {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient);
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* ===== СПЕЦИФИЧЕСКИЕ СТИЛИ ДЛЯ БОНУСОВ ===== */
+        .bonus-content {
+            padding: 20px 16px;
+            background: var(--bg-dark);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--bonus-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .daily-bonus {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .daily-bonus::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,215,0,0.1), transparent 70%);
+            pointer-events: none;
+        }
+
+        .bonus-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .bonus-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--bonus-gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--bg-dark);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        .bonus-title {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .bonus-desc {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .bonus-amount {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--bonus-gradient);
+            background: var(--bonus-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .bonus-timer {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .timer-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--bonus-gradient);
+        }
+
+        .bonus-button {
+            width: 100%;
+            padding: 16px;
+            background: var(--bonus-gradient);
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .bonus-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+        }
+
+        .bonus-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .bonus-button.secondary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .bonus-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bonus-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .card-icon.purple {
+            background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+        }
+
+        .card-icon.gold {
+            background: var(--bonus-gradient);
+            color: var(--bg-dark);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .bonus-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-value {
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .info-value.highlight {
+            color: var(--primary);
+        }
+
+        .wager-progress {
+            background: var(--bg-dark);
+            border-radius: 100px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .badge {
+            background: rgba(255,107,0,0.2);
+            border: 1px solid var(--primary);
+            border-radius: 100px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.success {
+            background: rgba(0,200,83,0.2);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .game-of-week {
+            background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,61,0,0.1));
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-of-week::before {
+            content: '★';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 120px;
+            color: var(--primary);
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .week-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .week-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--mine-gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(255,61,0,0.3);
+        }
+
+        .week-info {
+            flex: 1;
+        }
+
+        .week-game {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .week-multiplier {
+            color: var(--success);
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .week-button {
+            background: var(--gradient);
+            border: none;
+            border-radius: 100px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .week-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,107,0,0.4);
+        }
+
+        /* Профиль меню */
+        .profile-menu {
+            position: fixed;
+            top: 70px;
+            right: 16px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            width: 300px;
+            max-width: calc(100vw - 32px);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            z-index: 1001;
+            display: none;
+        }
+
+        .profile-menu.active {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            z-index: 1000;
+            max-width: calc(100vw - 30px);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .notification.show { transform: translateX(0); }
+
+        @media (max-width: 480px) {
+            .bonus-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .week-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .bonus-timer {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Верхняя панель -->
+        <div class="top-bar">
+            <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
+            <div class="top-actions">
+                <div class="balance-chip" id="balanceChip">
+                    <i class="fas fa-coins"></i>
+                    <span class="balance-number" id="mainBalance">0</span> ₽
+                </div>
+                <div class="avatar-btn" id="avatarBtn">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ БОНУСЫ -->
+        <div class="bonus-content">
+            <h1 class="page-title">🎁 БОНУСЫ</h1>
+            <p class="page-subtitle">Ежедневные награды и специальные предложения</p>
+            
+            <!-- ЕЖЕДНЕВНЫЙ БОНУС 1 РУБЛЬ -->
+            <div class="daily-bonus">
+                <div class="bonus-header">
+                    <div class="bonus-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <div class="bonus-title">Ежедневный бонус</div>
+                        <div class="bonus-desc">Заходи каждый день и получай 1 ₽</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-amount" id="dailyBonusAmount">1 ₽</div>
+                
+                <div class="bonus-timer">
+                    <span class="timer-label">
+                        <i class="fas fa-clock"></i> До следующего бонуса:
+                    </span>
+                    <span class="timer-value" id="dailyTimer">00:00:00</span>
+                </div>
+                
+                <button class="bonus-button" id="claimDailyBonus">
+                    <i class="fas fa-gift"></i>
+                    ЗАБРАТЬ 1 ₽
+                </button>
+            </div>
+            
+            <!-- БОНУС НА ПЕРВЫЙ ДЕПОЗИТ 100% -->
+            <div class="bonus-card">
+                <div class="bonus-card-header">
+                    <div class="card-icon gold">
+                        <i class="fas fa-percent"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">100% на первый депозит</div>
+                        <div class="card-subtitle">Удвоим ваш первый депозит от 10 000 ₽</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-info-row">
+                    <span class="info-label">
+                        <i class="fas fa-coins"></i> Мин. депозит:
+                    </span>
+                    <span class="info-value highlight">10 000 ₽</span>
+                </div>
+                
+                <div class="bonus-info-row">
+                    <span class="info-label">
+                        <i class="fas fa-arrows-spin"></i> Отыгрыш:
+                    </span>
+                    <span class="info-value">50% от суммы бонуса</span>
+                </div>
+                
+                <div id="firstDepositStatus">
+                    <!-- Статус будет заполняться JS -->
+                </div>
+                
+                <button class="bonus-button secondary" id="goToDeposit" onclick="window.location.href='sbp.html'">
+                    <i class="fas fa-wallet"></i>
+                    ПОПОЛНИТЬ БАЛАНС
+                </button>
+            </div>
+            
+            <!-- АКТИВНЫЙ БОНУС (ОТЫГРЫШ) -->
+            <div class="bonus-card" id="activeBonusCard" style="display: none;">
+                <div class="bonus-card-header">
+                    <div class="card-icon purple">
+                        <i class="fas fa-arrows-spin"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">Активный бонус</div>
+                        <div class="card-subtitle" id="activeBonusDesc">100% на депозит</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-info-row">
+                    <span class="info-label">
+                        <i class="fas fa-coins"></i> Получено:
+                    </span>
+                    <span class="info-value" id="bonusAmount">0 ₽</span>
+                </div>
+                
+                <div class="bonus-info-row">
+                    <span class="info-label">
+                        <i class="fas fa-arrows-spin"></i> Отыграно:
+                    </span>
+                    <span class="info-value" id="wageredAmount">0 ₽ / 0 ₽</span>
+                </div>
+                
+                <div class="wager-progress">
+                    <div class="progress-fill" id="wagerProgress" style="width: 0%;"></div>
+                </div>
+                
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <span class="badge">
+                        <i class="fas fa-info-circle"></i> Осталось отыграть: <span id="remainingWager">0 ₽</span>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- ИГРА НЕДЕЛИ: MINES x5 -->
+            <div class="game-of-week">
+                <div class="week-title">
+                    <i class="fas fa-crown"></i> ИГРА НЕДЕЛИ
+                </div>
+                <div class="week-content">
+                    <div class="week-icon">
+                        <i class="fas fa-bomb"></i>
+                    </div>
+                    <div class="week-info">
+                        <div class="week-game">MINES</div>
+                        <div class="week-multiplier">x5 множитель</div>
+                        <button class="week-button" onclick="window.location.href='mines.html'">
+                            ИГРАТЬ <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ИСТОРИЯ БОНУСОВ -->
+            <div class="bonus-card" style="background: var(--bg-dark);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: 800;">📋 История бонусов</span>
+                    <span class="badge success" id="bonusStats">0 получено</span>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 13px;" id="bonusHistory">
+                    <!-- История будет заполняться JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Оверлей и профиль -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="profile-menu" id="profileMenu">
+        <div class="profile-header" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <div style="width:50px; height:50px; background:var(--gradient); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px;">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <h3 id="profileUsername" style="font-size:16px; margin-bottom:3px;">Гость</h3>
+                <p id="profileUserId" style="color:var(--text-secondary); font-size:12px;">ID: Не авторизован</p>
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px;">
+            <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;" id="profileBalance">0 ₽</div>
+                <div style="color:var(--text-secondary); font-size:11px;">Баланс</div>
+            </div>
+            <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;" id="profileBonus">0</div>
+                <div style="color:var(--text-secondary); font-size:11px;">Бонусы</div>
+            </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <button onclick="window.location.href='sbp.html'" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-wallet"></i> Пополнить</button>
+            <button onclick="window.location.href='bon.html'" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-gift"></i> Бонусы</button>
+            <button onclick="window.open('https://t.me/orangew1nsupport', '_blank')" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-headset"></i> Поддержка</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== SUPABASE ==========
+        const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // ========== ПЕРЕМЕННЫЕ ==========
+        let currentBalance = 0;
+        let userId = null;
+        
+        // Бонусы
+        let dailyBonusAvailable = false;
+        let dailyLastClaim = null;
+        let dailyTimer = null;
+        
+        let firstDepositBonusClaimed = false;
+        let activeBonus = null; // { type: 'first_deposit', amount: 0, wager: 0, wagered: 0 }
+        
+        let bonusHistory = [];
+        
+        // ========== ЭЛЕМЕНТЫ ==========
+        const balanceEl = document.getElementById('mainBalance');
+        const profileBalanceEl = document.getElementById('profileBalance');
+        const profileBonusEl = document.getElementById('profileBonus');
+        const claimDailyBtn = document.getElementById('claimDailyBonus');
+        const dailyTimerEl = document.getElementById('dailyTimer');
+        const activeBonusCard = document.getElementById('activeBonusCard');
+        const bonusAmountEl = document.getElementById('bonusAmount');
+        const wageredAmountEl = document.getElementById('wageredAmount');
+        const wagerProgressEl = document.getElementById('wagerProgress');
+        const remainingWagerEl = document.getElementById('remainingWager');
+        const bonusHistoryEl = document.getElementById('bonusHistory');
+        const bonusStatsEl = document.getElementById('bonusStats');
+        const firstDepositStatus = document.getElementById('firstDepositStatus');
+        
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        function initBonuses() {
+            userId = localStorage.getItem('user_id');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                localStorage.setItem('user_id', userId);
+                localStorage.setItem('username', 'Игрок');
+            }
+            
+            const savedBalance = localStorage.getItem('user_balance');
+            currentBalance = savedBalance ? parseInt(savedBalance) : 15780;
+            localStorage.setItem('user_balance', currentBalance);
+            
+            loadBonusData();
+            updateBalanceDisplay();
+            updateProfileInfo();
+            checkDailyBonus();
+            checkFirstDepositBonus();
+            loadActiveBonus();
+            loadBonusHistory();
+            
+            // Запускаем таймер ежедневного бонуса
+            startDailyTimer();
+            
+            // Подписываемся на обновления баланса для отыгрыша
+            subscribeToGameUpdates();
+        }
+        
+        function loadBonusData() {
+            // Загружаем статус ежедневного бонуса
+            const lastClaim = localStorage.getItem('daily_bonus_last');
+            if (lastClaim) {
+                dailyLastClaim = new Date(parseInt(lastClaim));
+            }
+            
+            // Загружаем статус бонуса на первый депозит
+            firstDepositBonusClaimed = localStorage.getItem('first_deposit_bonus_claimed') === 'true';
+            
+            // Загружаем активный бонус
+            const savedBonus = localStorage.getItem('active_bonus');
+            if (savedBonus) {
+                try {
+                    activeBonus = JSON.parse(savedBonus);
+                } catch(e) {}
+            }
+            
+            // Загружаем историю бонусов
+            const savedHistory = localStorage.getItem('bonus_history');
+            if (savedHistory) {
+                try {
+                    bonusHistory = JSON.parse(savedHistory);
+                } catch(e) {}
+            }
+        }
+        
+        function saveBonusData() {
+            if (dailyLastClaim) {
+                localStorage.setItem('daily_bonus_last', dailyLastClaim.getTime().toString());
+            }
+            localStorage.setItem('first_deposit_bonus_claimed', firstDepositBonusClaimed);
+            if (activeBonus) {
+                localStorage.setItem('active_bonus', JSON.stringify(activeBonus));
+            } else {
+                localStorage.removeItem('active_bonus');
+            }
+            localStorage.setItem('bonus_history', JSON.stringify(bonusHistory.slice(0, 20)));
+        }
+        
+        function updateBalanceDisplay() {
+            const formatted = currentBalance.toLocaleString();
+            balanceEl.textContent = formatted;
+            profileBalanceEl.textContent = formatted + ' ₽';
+        }
+        
+        function updateProfileInfo() {
+            const username = localStorage.getItem('username') || 'Гость';
+            document.getElementById('profileUsername').textContent = username;
+            document.getElementById('profileUserId').textContent = `ID: ${userId}`;
+            profileBonusEl.textContent = bonusHistory.length;
+        }
+        
+        // ========== ЕЖЕДНЕВНЫЙ БОНУС 1 РУБЛЬ ==========
+        function checkDailyBonus() {
+            if (!dailyLastClaim) {
+                dailyBonusAvailable = true;
+                claimDailyBtn.disabled = false;
+                return;
+            }
+            
+            const now = new Date();
+            const nextDay = new Date(dailyLastClaim);
+            nextDay.setDate(nextDay.getDate() + 1);
+            nextDay.setHours(0, 0, 0, 0);
+            
+            dailyBonusAvailable = now >= nextDay;
+            claimDailyBtn.disabled = !dailyBonusAvailable;
+        }
+        
+        function startDailyTimer() {
+            if (dailyTimer) clearInterval(dailyTimer);
+            
+            dailyTimer = setInterval(() => {
+                if (!dailyLastClaim) {
+                    dailyTimerEl.textContent = 'Доступно сейчас!';
+                    return;
+                }
+                
+                const now = new Date();
+                const nextDay = new Date(dailyLastClaim);
+                nextDay.setDate(nextDay.getDate() + 1);
+                nextDay.setHours(0, 0, 0, 0);
+                
+                const diff = nextDay - now;
+                
+                if (diff <= 0) {
+                    dailyBonusAvailable = true;
+                    claimDailyBtn.disabled = false;
+                    dailyTimerEl.textContent = 'Доступно сейчас!';
+                } else {
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    dailyTimerEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                checkDailyBonus();
+            }, 1000);
+        }
+        
+        function claimDailyBonus() {
+            if (!dailyBonusAvailable) return;
+            
+            // Начисляем 1 рубль
+            currentBalance += 1;
+            localStorage.setItem('user_balance', currentBalance);
+            updateBalanceDisplay();
+            
+            // Обновляем время последнего получения
+            dailyLastClaim = new Date();
+            dailyLastClaim.setHours(0, 0, 0, 0);
+            localStorage.setItem('daily_bonus_last', dailyLastClaim.getTime().toString());
+            
+            // Добавляем в историю
+            addBonusHistory('Ежедневный бонус', 1);
+            
+            // Показываем уведомление
+            showNotification('Ежедневный бонус!', 'Вы получили 1 ₽');
+            
+            dailyBonusAvailable = false;
+            claimDailyBtn.disabled = true;
+        }
+        
+        // ========== БОНУС НА ПЕРВЫЙ ДЕПОЗИТ 100% ==========
+        function checkFirstDepositBonus() {
+            if (firstDepositBonusClaimed) {
+                firstDepositStatus.innerHTML = `
+                    <div style="margin-bottom: 12px;">
+                        <span class="badge success">
+                            <i class="fas fa-check-circle"></i> Бонус уже активирован
+                        </span>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Проверяем, был ли депозит от 10000
+            const lastDeposit = localStorage.getItem('last_deposit_amount');
+            const depositProcessed = localStorage.getItem('first_deposit_processed');
+            
+            if (lastDeposit && parseInt(lastDeposit) >= 10000 && !depositProcessed) {
+                // Автоматически активируем бонус при депозите от 10000
+                activateFirstDepositBonus(parseInt(lastDeposit));
+                localStorage.setItem('first_deposit_processed', 'true');
+            }
+            
+            firstDepositStatus.innerHTML = `
+                <div style="margin-bottom: 12px; color: var(--text-secondary); font-size: 13px;">
+                    <i class="fas fa-info-circle"></i> Бонус активируется автоматически при депозите от 10 000 ₽
+                </div>
+            `;
+        }
+        
+        function activateFirstDepositBonus(depositAmount) {
+            if (firstDepositBonusClaimed) return;
+            
+            const bonusAmount = depositAmount; // 100% от депозита
+            const wagerRequired = Math.floor(bonusAmount * 0.5); // 50% от суммы бонуса
+            
+            activeBonus = {
+                type: 'first_deposit',
+                amount: bonusAmount,
+                wager: wagerRequired,
+                wagered: 0,
+                depositAmount: depositAmount,
+                activatedAt: new Date().toISOString()
+            };
+            
+            // Начисляем бонус на баланс
+            currentBalance += bonusAmount;
+            localStorage.setItem('user_balance', currentBalance);
+            updateBalanceDisplay();
+            
+            // Отмечаем бонус как полученный
+            firstDepositBonusClaimed = true;
+            
+            // Добавляем в историю
+            addBonusHistory('100% на первый депозит', bonusAmount);
+            
+            saveBonusData();
+            loadActiveBonus();
+            
+            showNotification('Бонус активирован!', `+${bonusAmount.toLocaleString()} ₽, отыгрыш: ${wagerRequired.toLocaleString()} ₽`);
+        }
+        
+        // ========== АКТИВНЫЙ БОНУС И ОТЫГРЫШ ==========
+        function loadActiveBonus() {
+            if (activeBonus) {
+                activeBonusCard.style.display = 'block';
+                
+                bonusAmountEl.textContent = `${activeBonus.amount.toLocaleString()} ₽`;
+                wageredAmountEl.textContent = `${activeBonus.wagered.toLocaleString()} ₽ / ${activeBonus.wager.toLocaleString()} ₽`;
+                
+                const progress = (activeBonus.wagered / activeBonus.wager) * 100;
+                wagerProgressEl.style.width = `${Math.min(100, progress)}%`;
+                
+                const remaining = activeBonus.wager - activeBonus.wagered;
+                remainingWagerEl.textContent = `${remaining.toLocaleString()} ₽`;
+                
+                if (activeBonus.wagered >= activeBonus.wager) {
+                    // Бонус отыгран
+                    setTimeout(() => {
+                        activeBonus = null;
+                        saveBonusData();
+                        activeBonusCard.style.display = 'none';
+                        showNotification('Бонус отыгран!', 'Теперь вы можете вывести средства');
+                    }, 1000);
+                }
+            } else {
+                activeBonusCard.style.display = 'none';
+            }
+        }
+        
+        // Подписка на игры для отыгрыша
+        function subscribeToGameUpdates() {
+            // Слушаем изменения баланса в localStorage
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'user_balance') {
+                    const oldBalance = currentBalance;
+                    const newBalance = parseInt(e.newValue);
+                    
+                    if (activeBonus && newBalance < oldBalance) {
+                        // Игрок сделал ставку - засчитываем в отыгрыш
+                        const betAmount = oldBalance - newBalance;
+                        addWager(betAmount);
+                    }
+                    
+                    currentBalance = newBalance;
+                    updateBalanceDisplay();
+                }
+            });
+            
+            // Также слушаем изменения на этой вкладке
+            const originalSetItem = localStorage.setItem;
+            localStorage.setItem = function(key, value) {
+                if (key === 'user_balance') {
+                    const oldValue = localStorage.getItem(key);
+                    const oldBalance = oldValue ? parseInt(oldValue) : currentBalance;
+                    const newBalance = parseInt(value);
+                    
+                    if (activeBonus && newBalance < oldBalance) {
+                        const betAmount = oldBalance - newBalance;
+                        addWager(betAmount);
+                    }
+                    
+                    currentBalance = newBalance;
+                }
+                originalSetItem.apply(this, arguments);
+            };
+        }
+        
+        function addWager(amount) {
+            if (!activeBonus) return;
+            if (activeBonus.wagered >= activeBonus.wager) return;
+            
+            activeBonus.wagered += amount;
+            if (activeBonus.wagered > activeBonus.wager) {
+                activeBonus.wagered = activeBonus.wager;
+            }
+            
+            saveBonusData();
+            loadActiveBonus();
+        }
+        
+        // ========== ИСТОРИЯ БОНУСОВ ==========
+        function addBonusHistory(name, amount) {
+            bonusHistory.unshift({
+                id: Date.now(),
+                name: name,
+                amount: amount,
+                date: new Date().toISOString()
+            });
+            
+            if (bonusHistory.length > 20) {
+                bonusHistory.pop();
+            }
+            
+            saveBonusData();
+            loadBonusHistory();
+        }
+        
+        function loadBonusHistory() {
+            bonusStatsEl.textContent = `${bonusHistory.length} получено`;
+            
+            if (bonusHistory.length === 0) {
+                bonusHistoryEl.innerHTML = '<p style="text-align: center; padding: 16px;">У вас пока нет бонусов</p>';
+                return;
+            }
+            
+            let html = '';
+            bonusHistory.slice(0, 5).forEach(bonus => {
+                const date = new Date(bonus.date);
+                const formattedDate = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+                
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <div>
+                            <span style="font-weight: 700;">${bonus.name}</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; margin-left: 8px;">${formattedDate}</span>
+                        </div>
+                        <span style="color: var(--success); font-weight: 800;">+${bonus.amount.toLocaleString()} ₽</span>
+                    </div>
+                `;
+            });
+            
+            bonusHistoryEl.innerHTML = html;
+        }
+        
+        // ========== УВЕДОМЛЕНИЯ ==========
+        function showNotification(title, message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification show';
+            notification.innerHTML = `
+                <i class="fas fa-gift" style="color: var(--bonus-gradient);"></i>
+                <div>
+                    <div style="font-weight:800; font-size:16px;">${title}</div>
+                    <div style="font-size:12px; opacity:0.9;">${message}</div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // ========== ПРОФИЛЬ ==========
+        let isProfileOpen = false;
+        function toggleProfile() {
+            const menu = document.getElementById('profileMenu');
+            const overlay = document.getElementById('menuOverlay');
+            isProfileOpen = !isProfileOpen;
+            menu.classList.toggle('active', isProfileOpen);
+            overlay.classList.toggle('active', isProfileOpen);
+            updateProfileInfo();
+            profileBalanceEl.textContent = currentBalance.toLocaleString() + ' ₽';
+            profileBonusEl.textContent = bonusHistory.length;
+        }
+        
+        function closeProfile() {
+            document.getElementById('profileMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+            isProfileOpen = false;
+        }
+        
+        // ========== НАЗАД В МЕНЮ ==========
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+        
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initBonuses();
+            
+            document.getElementById('balanceChip').addEventListener('click', () => {
+                window.location.href = 'sbp.html';
+            });
+            
+            document.getElementById('avatarBtn').addEventListener('click', toggleProfile);
+            document.getElementById('menuOverlay').addEventListener('click', closeProfile);
+            
+            claimDailyBtn.addEventListener('click', claimDailyBonus);
+            
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('user_balance', currentBalance);
+                saveBonusData();
+            });
+            
+            window.addEventListener('focus', function() {
+                const savedBalance = localStorage.getItem('user_balance');
+                if (savedBalance && parseInt(savedBalance) !== currentBalance) {
+                    currentBalance = parseInt(savedBalance);
+                    updateBalanceDisplay();
+                }
+                checkFirstDepositBonus();
+            });
+        });
+    </script>
+</body>
+</html>
