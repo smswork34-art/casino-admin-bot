@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ORANGEW1N — твоё казино</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        /* ===== ПОЛНОСТЬЮ СОХРАНЯЕМ ТВОЙ ФУНКЦИОНАЛ, МЕНЯЕМ ТОЛЬКО ВИЗУАЛ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #FF6B00;
+            --primary-dark: #FF4500;
+            --primary-light: #FF8C00;
+            --secondary: #00C2FF;
+            --success: #00C853;
+            --danger: #FF3D00;
+            --warning: #FF9800;
+            --bg-dark: #0A0A0A;
+            --bg-card: #111111;
+            --bg-sidebar: #0D0D0D;
+            --bg-header: #0A0A0A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #9B9B9B;
+            --border: #252525;
+            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
+            --bottom-nav: #0D0D0D;
+            --card-bg: #1A1A1A;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 85px;
+        }
+
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            background: var(--bg-dark);
+        }
+
+        /* Шапка */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-mini {
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .balance-chip {
+            background: var(--card-bg);
+            border-radius: 100px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .balance-chip i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .avatar-btn {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient);
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Баннер */
+        .banner-carousel {
+            padding: 16px 16px 8px;
+            position: relative;
+        }
+
+        .banner-slide {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 2.2 / 1;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .banner-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(255,107,0,0.4);
+            pointer-events: none;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 6px;
+            background: var(--border);
+            transition: all 0.2s;
+        }
+
+        .dot.active {
+            width: 20px;
+            background: var(--primary);
+        }
+
+        /* Быстрый доступ */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 20px 16px;
+            margin-bottom: 8px;
+        }
+
+        .quick-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .quick-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(145deg, #1E1E1E, #151515);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            transition: 0.1s;
+            pointer-events: none;
+        }
+
+        .quick-icon i {
+            filter: drop-shadow(0 4px 6px rgba(255,107,0,0.3));
+        }
+
+        .quick-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        /* Промо-ряд */
+        .promo-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 8px 16px 16px;
+        }
+
+        .promo-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 16px 12px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .promo-title {
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 4px;
+            pointer-events: none;
+        }
+
+        .promo-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            pointer-events: none;
+        }
+
+        .promo-btn {
+            background: var(--gradient);
+            border: none;
+            border-radius: 100px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+        .promo-icon {
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 60px;
+            opacity: 0.1;
+            color: white;
+            pointer-events: none;
+        }
+
+        /* Популярные игры */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 8px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .section-link {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .games-horizontal {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding: 8px 16px 16px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .games-horizontal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .game-h-card {
+            flex: 0 0 110px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 16px 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: 0.15s;
+            cursor: pointer;
+        }
+
+        .game-h-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 26px;
+            color: white;
+            pointer-events: none;
+        }
+
+        .game-h-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            pointer-events: none;
+        }
+
+        .game-h-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        /* Сетка игр */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: 0.15s;
+            cursor: pointer;
+        }
+
+        .game-card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 22px;
+            pointer-events: none;
+        }
+
+        .game-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        /* Плавающая кнопка */
+        .floating-deposit {
+            position: fixed;
+            bottom: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            border-radius: 100px;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            box-shadow: 0 8px 25px rgba(255,107,0,0.5);
+            border: none;
+            z-index: 99;
+            white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .floating-deposit i {
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        /* Нижняя навигация */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bottom-nav);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 16px 24px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom, 10px));
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 2px;
+            pointer-events: none;
+        }
+
+        .nav-item span {
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Профиль меню */
+        .profile-menu {
+            position: fixed;
+            top: 70px;
+            right: 16px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            width: 300px;
+            max-width: calc(100vw - 32px);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            z-index: 1001;
+            display: none;
+        }
+
+        .profile-menu.active {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            z-index: 1000;
+            max-width: calc(100vw - 30px);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .notification.show { transform: translateX(0); }
+
+        @media (max-width: 400px) {
+            .quick-icon { width: 58px; height: 58px; font-size: 24px; }
+            .games-grid { grid-template-columns: repeat(3, 1fr); }
+            .floating-deposit { padding: 12px 24px; font-size: 14px; bottom: 90px; }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // ========== ТВОЙ SUPABASE, ТВОИ ФУНКЦИИ ==========
+        const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        let currentBalance = 15780;
+        let userId = null;
+        let subscription = null;
+        let withdrawalSubscription = null;
+        let isProfileOpen = false;
+
+        // Инициализация
+        function initUser() {
+            userId = localStorage.getItem('user_id');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                localStorage.setItem('user_id', userId);
+                localStorage.setItem('username', 'Игрок');
+            }
+            const savedBalance = localStorage.getItem('user_balance');
+            if (savedBalance) currentBalance = parseInt(savedBalance);
+            else localStorage.setItem('user_balance', currentBalance);
+            
+            updateBalanceDisplay();
+            subscribeToBalanceUpdates();
+            subscribeToWithdrawalUpdates();
+            updateProfileInfo();
+        }
+
+        function updateBalanceDisplay() {
+            const formatted = currentBalance.toLocaleString();
+            document.querySelectorAll('.balance-number').forEach(el => {
+                el.textContent = formatted;
+            });
+            const profileBalance = document.getElementById('profileBalance');
+            if (profileBalance) profileBalance.textContent = formatted + ' ₽';
+        }
+
+        function updateBalance(amount) {
+            currentBalance += amount;
+            localStorage.setItem('user_balance', currentBalance);
+            updateBalanceDisplay();
+        }
+
+        function updateProfileInfo() {
+            const username = localStorage.getItem('username') || 'Гость';
+            document.getElementById('profileUsername').textContent = username;
+            document.getElementById('profileUserId').textContent = `ID: ${userId}`;
+        }
+
+        function subscribeToBalanceUpdates() {
+            if (!userId) return;
+            if (subscription) subscription.unsubscribe();
+            subscription = supabaseClient
+                .channel('balance-updates-' + userId)
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'deposit_requests',
+                    filter: `user_id=eq.${userId}`
+                }, (payload) => {
+                    if (payload.new.status === 'completed' && payload.new.confirmed_at) {
+                        const depositAmount = payload.new.amount;
+                        const processedKey = 'processed_' + payload.new.id;
+                        if (!localStorage.getItem(processedKey)) {
+                            updateBalance(depositAmount);
+                            localStorage.setItem(processedKey, 'true');
+                            showNotification('Платёж подтверждён!', `Баланс пополнен на ${depositAmount.toLocaleString()} ₽`);
+                        }
+                    }
+                })
+                .subscribe();
+        }
+
+        function subscribeToWithdrawalUpdates() {
+            if (!userId) return;
+            if (withdrawalSubscription) withdrawalSubscription.unsubscribe();
+            withdrawalSubscription = supabaseClient
+                .channel('withdrawal-updates-' + userId)
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'withdrawal_requests',
+                    filter: `user_id=eq.${userId}`
+                }, (payload) => {
+                    const processedKey = 'withdrawal_processed_' + payload.new.id;
+                    if (payload.new.status === 'rejected' && !localStorage.getItem(processedKey)) {
+                        updateBalance(payload.new.amount);
+                        localStorage.setItem(processedKey, 'true');
+                        showNotification('Вывод отклонён', `Сумма ${payload.new.amount.toLocaleString()} ₽ возвращена`);
+                    }
+                    if (payload.new.status === 'completed' && !localStorage.getItem(processedKey)) {
+                        showNotification('Вывод завершён', `Сумма ${payload.new.final_amount.toLocaleString()} ₽ отправлена`);
+                        localStorage.setItem(processedKey, 'true');
+                    }
+                })
+                .subscribe();
+        }
+
+        // Уведомления
+        function showNotification(title, message) {
+            const notif = document.getElementById('notification');
+            if (!notif) {
+                const div = document.createElement('div');
+                div.className = 'notification show';
+                div.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success);"></i><div><div style="font-weight:800">${title}</div><div style="font-size:12px">${message}</div></div>`;
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 3000);
+                return;
+            }
+            document.getElementById('notifTitle').textContent = title;
+            document.getElementById('notifMessage').textContent = message;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        // Профиль
+        function toggleProfile() {
+            const profileMenu = document.getElementById('profileMenu');
+            const overlay = document.getElementById('menuOverlay');
+            isProfileOpen = !isProfileOpen;
+            profileMenu.classList.toggle('active', isProfileOpen);
+            overlay.classList.toggle('active', isProfileOpen);
+        }
+
+        function closeProfile() {
+            document.getElementById('profileMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+            isProfileOpen = false;
+        }
+
+        // Навигация по играм
+        function goToMines() { window.location.href = 'mines.html'; }
+        function goToCrash() { window.location.href = 'crash.html'; }
+        function goToRoulette() { window.location.href = 'roulette.html'; }
+        function goToSbp() { 
+            localStorage.setItem('sbp_amount', 1000);
+            window.location.href = 'sbp.html'; 
+        }
+        function goToBonus() { window.location.href = 'bonus.html'; }
+
+        // Скролл к играм
+        function scrollToGames() {
+            document.getElementById('all-games').scrollIntoView({behavior: 'smooth'});
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('[data-page="games"]')?.classList.add('active');
+        }
+
+        // Баннер карусель
+        let bannerIndex = 0;
+        const banners = [
+            { img: 'ban3.png', fallback: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600', text: 'БОНУС +100%' },
+            { img: 'ban.png', fallback: 'https://images.unsplash.com/photo-1593113630400-ea428b2497c9?w=600', text: 'ТУРНИР' },
+            { img: 'ban2.png', fallback: 'https://images.unsplash.com/photo-1621259182978-8e3d3b9b0c6a?w=600', text: 'MINES' }
+        ];
+
+        function changeBanner(index) {
+            const slide = document.getElementById('bannerSlide');
+            const badge = document.getElementById('bannerBadge');
+            if (!slide) return;
+            const b = banners[index];
+            slide.src = b.img;
+            slide.onerror = () => { slide.src = b.fallback; };
+            badge.textContent = b.text;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextBanner() {
+            bannerIndex = (bannerIndex + 1) % banners.length;
+            changeBanner(bannerIndex);
+        }
+
+        // ========== МОДАЛКИ (ПОЛНОСТЬЮ ТВОИ) ==========
+        function showDepositModal() {
+            closeProfile();
+            const isMobile = window.innerWidth <= 768;
+            const modalWidth = isMobile ? '95%' : '380px';
+            const padding = isMobile ? '20px' : '25px';
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.95); display: flex;
+                justify-content: center; align-items: center; z-index: 1002;
+                backdrop-filter: blur(3px); padding: 15px;
+                overflow-y: auto;
+            `;
+            modal.innerHTML = `
+                <div style="
+                    background: var(--bg-card); border-radius: 16px;
+                    padding: ${padding}; width: ${modalWidth}; max-width: 420px;
+                    border: 1px solid var(--border);
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+                    position: relative;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                ">
+                    <div style="
+                        position: absolute; top: ${isMobile ? '10px' : '15px'}; right: ${isMobile ? '10px' : '15px'};
+                        color: var(--text-secondary); font-size: ${isMobile ? '20px' : '22px'};
+                        cursor: pointer; transition: all 0.3s;
+                        width: ${isMobile ? '32px' : '36px'}; height: ${isMobile ? '32px' : '36px'}; display: flex;
+                        align-items: center; justify-content: center;
+                        border-radius: 8px; background: rgba(255, 107, 0, 0.05);
+                    " id="closeDepModal">&times;</div>
+                    
+                    <div style="text-align: center; margin-bottom: 15px; padding-right: ${isMobile ? '25px' : '30px'};">
+                        <div style="
+                            width: ${isMobile ? '45px' : '50px'}; height: ${isMobile ? '45px' : '50px'}; background: var(--gradient);
+                            border-radius: ${isMobile ? '10px' : '12px'}; display: flex; align-items: center;
+                            justify-content: center; margin: 0 auto 10px;
+                            font-size: ${isMobile ? '18px' : '20px'}; color: white;
+                        "><i class="fas fa-wallet"></i></div>
+                        <h2 style="color: var(--text-primary); margin-bottom: 5px; font-size: ${isMobile ? '18px' : '20px'};">Пополнение через СБП</h2>
+                        <p style="color: var(--text-secondary); font-size: ${isMobile ? '12px' : '13px'};">Текущий баланс: <span style="color: var(--primary); font-weight: 700;" id="modalBalance">${currentBalance.toLocaleString()} ₽</span></p>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: ${isMobile ? '11px' : '12px'}; font-weight: 600;">Сумма пополнения (₽)</div>
+                        <input type="number" id="depositAmount" style="
+                            width: 100%; padding: ${isMobile ? '12px' : '14px'}; background: var(--bg-dark);
+                            border: 1px solid var(--border); border-radius: ${isMobile ? '8px' : '10px'};
+                            color: var(--text-primary); font-size: ${isMobile ? '15px' : '16px'};
+                            outline: none; transition: all 0.2s; font-weight: 600;
+                        " placeholder="1000" min="100" value="1000">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(${isMobile ? '2' : '3'}, 1fr); gap: 8px; margin-bottom: 15px;">
+                        <button class="quick-deposit" data-amount="500" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">500 ₽</button>
+                        <button class="quick-deposit" data-amount="1000" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">1 000 ₽</button>
+                        <button class="quick-deposit" data-amount="2000" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">2 000 ₽</button>
+                        <button class="quick-deposit" data-amount="3000" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">3 000 ₽</button>
+                        <button class="quick-deposit" data-amount="5000" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">5 000 ₽</button>
+                        <button class="quick-deposit" data-amount="10000" style="padding: ${isMobile ? '10px 5px' : '10px 5px'}; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: ${isMobile ? '12px' : '13px'};">10 000 ₽</button>
+                    </div>
+                    
+                    <div style="background: rgba(0, 194, 255, 0.08); border: 1px solid rgba(0, 194, 255, 0.2); border-radius: 10px; padding: 12px; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <div style="width: ${isMobile ? '28px' : '32px'}; height: ${isMobile ? '28px' : '32px'}; background: rgba(0, 194, 255, 0.2); border-radius: ${isMobile ? '6px' : '8px'}; display: flex; align-items: center; justify-content: center; color: var(--secondary); font-size: ${isMobile ? '12px' : '14px'};"><i class="fas fa-mobile-alt"></i></div>
+                            <div style="color: var(--secondary); font-weight: 700; font-size: ${isMobile ? '13px' : '14px'};">Оплата через СБП</div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: ${isMobile ? '11px' : '12px'}; line-height: 1.5;">• Переведите сумму на указанные реквизиты<br>• Подтвердите оплату в приложении<br>• Баланс пополнится после проверки</div>
+                    </div>
+                    
+                    <button id="confirmDeposit" style="
+                        width: 100%; padding: ${isMobile ? '14px' : '15px'}; background: var(--gradient);
+                        border: none; border-radius: ${isMobile ? '8px' : '10px'}; color: white;
+                        font-weight: 800; font-size: ${isMobile ? '14px' : '15px'}; cursor: pointer;
+                        transition: all 0.2s; display: flex; align-items: center;
+                        justify-content: center; gap: 8px;
+                    "><i class="fas fa-arrow-right"></i> Перейти к оплате</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.querySelector('#modalBalance').textContent = currentBalance.toLocaleString() + ' ₽';
+            modal.querySelector('#closeDepModal').onclick = () => modal.remove();
+            modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+            
+            modal.querySelectorAll('.quick-deposit').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    modal.querySelector('#depositAmount').value = this.dataset.amount;
+                    modal.querySelectorAll('.quick-deposit').forEach(b => {
+                        b.style.background = 'var(--bg-dark)';
+                        b.style.borderColor = 'var(--border)';
+                        b.style.color = 'var(--text-primary)';
+                    });
+                    this.style.background = 'var(--gradient)';
+                    this.style.borderColor = 'var(--primary)';
+                    this.style.color = 'white';
+                });
+            });
+            
+            modal.querySelector('#confirmDeposit').onclick = function(e) {
+                e.stopPropagation();
+                const amount = parseInt(modal.querySelector('#depositAmount').value);
+                if(amount < 100) { showNotification('Ошибка','Минимальная сумма 100 ₽'); return; }
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Подготовка...';
+                setTimeout(() => {
+                    modal.remove();
+                    localStorage.setItem('sbp_amount', amount);
+                    window.location.href = 'sbp.html';
+                }, 800);
+            };
+        }
+
+        function showWithdrawalModal() {
+            closeProfile();
+            const isMobile = window.innerWidth <= 768;
+            const modalWidth = isMobile ? '95%' : '420px';
+            const padding = isMobile ? '20px' : '25px';
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.95); display: flex;
+                justify-content: center; align-items: center; z-index: 1002;
+                backdrop-filter: blur(3px); padding: 15px;
+            `;
+            modal.innerHTML = `
+                <div style="background: var(--bg-card); border-radius: 16px; width: ${modalWidth}; max-width: 450px; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; max-height: 85vh;">
+                    <div style="position: absolute; top: ${isMobile ? '10px' : '15px'}; right: ${isMobile ? '10px' : '15px'}; color: var(--text-secondary); font-size: ${isMobile ? '20px' : '22px'}; cursor: pointer; width: ${isMobile ? '32px' : '36px'}; height: ${isMobile ? '32px' : '36px'}; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,107,0,0.05);" id="closeWithdrawalModal">&times;</div>
+                    <div style="padding: ${padding} ${padding} 0 ${padding}; flex-shrink:0;">
+                        <div style="text-align: center; margin-bottom: 15px; padding-right: ${isMobile ? '25px' : '30px'};">
+                            <div style="width: ${isMobile ? '45px' : '50px'}; height: ${isMobile ? '45px' : '50px'}; background: var(--gradient); border-radius: ${isMobile ? '10px' : '12px'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: ${isMobile ? '18px' : '20px'}; color: white;"><i class="fas fa-money-bill-wave"></i></div>
+                            <h2 style="color: var(--text-primary); margin-bottom: 5px; font-size: ${isMobile ? '18px' : '20px'};">Вывод средств</h2>
+                            <p style="color: var(--text-secondary); font-size: ${isMobile ? '12px' : '13px'};">Доступно: <span style="color: var(--primary); font-weight: 700;" id="availableBalance">${currentBalance.toLocaleString()} ₽</span></p>
+                        </div>
+                        <div style="background: rgba(255,152,0,0.08); border:1px solid rgba(255,152,0,0.2); border-radius:8px; padding:12px; margin-bottom:12px;">
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><div style="width:24px; height:24px; background:rgba(255,152,0,0.2); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--warning);"><i class="fas fa-exclamation-circle"></i></div><div style="color:var(--warning); font-weight:700; font-size:13px;">Комиссия 10%</div></div>
+                            <div style="color:var(--text-secondary); font-size:12px; line-height:1.4;">При выводе удерживается комиссия 10%. Минимум: 100 ₽</div>
+                        </div>
+                    </div>
+                    <div style="flex:1; overflow-y: auto; padding: 0 ${padding} ${padding} ${padding};">
+                        <div style="margin-bottom:15px;">
+                            <div style="color:var(--text-secondary); margin-bottom:8px; font-size:12px; font-weight:600;">Сумма вывода (₽)</div>
+                            <input type="number" id="withdrawalAmount" style="width:100%; padding:14px; background:var(--bg-dark); border:1px solid var(--border); border-radius:10px; color:var(--text-primary); font-size:16px; outline:none; font-weight:600;" placeholder="1000" min="100" value="1000">
+                            <div id="commissionNotice" style="color:var(--warning); font-size:12px; margin-top:8px;">Комиссия: 100 ₽ • К получению: 900 ₽</div>
+                        </div>
+                        <div style="display:grid; grid-template-columns: repeat(2,1fr); gap:8px; margin-bottom:15px;">
+                            <button class="quick-withdrawal" data-amount="500" style="padding:10px 5px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); font-weight:600; cursor:pointer;">500 ₽</button>
+                            <button class="quick-withdrawal" data-amount="1000" style="padding:10px 5px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); font-weight:600; cursor:pointer;">1 000 ₽</button>
+                            <button class="quick-withdrawal" data-amount="2000" style="padding:10px 5px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); font-weight:600; cursor:pointer;">2 000 ₽</button>
+                            <button class="quick-withdrawal" data-amount="5000" style="padding:10px 5px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); font-weight:600; cursor:pointer;">5 000 ₽</button>
+                        </div>
+                        <div style="margin-bottom:15px;">
+                            <div style="color:var(--text-secondary); margin-bottom:8px; font-size:12px; font-weight:600;">Выберите банк</div>
+                            <div class="bank-options" style="display:grid; grid-template-columns: repeat(2,1fr); gap:6px;">
+                                <div class="bank-option" data-bank="sber" style="padding:12px 6px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;"><i class="fas fa-university"></i> Сбербанк</div>
+                                <div class="bank-option" data-bank="tinkoff" style="padding:12px 6px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;"><i class="fas fa-credit-card"></i> Т-Банк</div>
+                                <div class="bank-option" data-bank="vtb" style="padding:12px 6px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;"><i class="fas fa-landmark"></i> ВТБ</div>
+                                <div class="bank-option" data-bank="alfa" style="padding:12px 6px; background:var(--bg-dark); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;"><i class="fas fa-building"></i> Альфа</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:15px;">
+                            <div style="color:var(--text-secondary); margin-bottom:8px; font-size:12px; font-weight:600;">Номер телефона/карты</div>
+                            <input type="text" id="walletDetails" style="width:100%; padding:14px; background:var(--bg-dark); border:1px solid var(--border); border-radius:10px; color:var(--text-primary); font-size:14px; outline:none;" placeholder="+7 900 000-00-00 или номер карты">
+                        </div>
+                        <div style="background:rgba(0,194,255,0.08); border:1px solid rgba(0,194,255,0.2); border-radius:8px; padding:12px; margin-bottom:15px;">
+                            <div style="color:var(--text-secondary); font-size:12px; line-height:1.4;">• Средства спишутся сразу<br>• Выплата в течение 24 часов<br>• При отклонении - возврат на баланс</div>
+                        </div>
+                    </div>
+                    <div style="padding: 0 ${padding} ${padding} ${padding}; flex-shrink:0;">
+                        <button id="confirmWithdrawal" style="width:100%; padding:15px; background:var(--gradient); border:none; border-radius:10px; color:white; font-weight:800; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><i class="fas fa-paper-plane"></i> Отправить заявку</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const closeBtn = modal.querySelector('#closeWithdrawalModal');
+            closeBtn.onclick = () => modal.remove();
+            modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+            
+            const updateCommission = () => {
+                const amount = parseInt(modal.querySelector('#withdrawalAmount').value) || 0;
+                const commission = Math.round(amount * 0.1);
+                const final = amount - commission;
+                modal.querySelector('#commissionNotice').innerHTML = `Комиссия: ${commission.toLocaleString()} ₽ • К получению: ${final.toLocaleString()} ₽`;
+            };
+            
+            modal.querySelector('#withdrawalAmount').addEventListener('input', updateCommission);
+            
+            modal.querySelectorAll('.quick-withdrawal').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    modal.querySelector('#withdrawalAmount').value = this.dataset.amount;
+                    updateCommission();
+                });
+            });
+            
+            let selectedBank = 'sber';
+            modal.querySelectorAll('.bank-option').forEach(opt => {
+                opt.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    modal.querySelectorAll('.bank-option').forEach(o => {
+                        o.style.background = 'var(--bg-dark)';
+                        o.style.color = 'var(--text-primary)';
+                        o.style.borderColor = 'var(--border)';
+                    });
+                    this.style.background = 'var(--gradient)';
+                    this.style.color = 'white';
+                    this.style.borderColor = 'var(--primary)';
+                    selectedBank = this.dataset.bank;
+                });
+            });
+            
+            setTimeout(() => modal.querySelector('.bank-option')?.click(), 10);
+            
+            modal.querySelector('#confirmWithdrawal').onclick = async function(e) {
+                e.stopPropagation();
+                const amount = parseInt(modal.querySelector('#withdrawalAmount').value);
+                const wallet = modal.querySelector('#walletDetails').value.trim();
+                if(amount < 100) { showNotification('Ошибка','Минимальная сумма 100 ₽'); return; }
+                if(amount > currentBalance) { showNotification('Ошибка','Недостаточно средств'); return; }
+                if(!wallet) { showNotification('Ошибка','Введите реквизиты'); return; }
+                const commission = Math.round(amount * 0.1);
+                const finalAmount = amount - commission;
+                const newBalance = currentBalance - amount;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                try {
+                    const requestId = 'WDR-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+                    const { error } = await supabaseClient.from('withdrawal_requests').insert({
+                        id: requestId, 
+                        user_id: userId, 
+                        user_name: localStorage.getItem('username') || 'Игрок',
+                        amount: amount, 
+                        commission: commission, 
+                        final_amount: finalAmount,
+                        wallet_type: 'sbp', 
+                        wallet_details: wallet, 
+                        bank: selectedBank,
+                        status: 'pending', 
+                        current_balance: currentBalance, 
+                        new_balance: newBalance,
+                        created_at: new Date().toISOString()
+                    });
+                    if(error) throw error;
+                    updateBalance(-amount);
+                    showNotification('Заявка отправлена!', `К выплате: ${finalAmount.toLocaleString()} ₽`);
+                    modal.remove();
+                } catch(e) {
+                    showNotification('Ошибка','Не удалось создать заявку');
+                    this.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить заявку';
+                }
+            };
+            updateCommission();
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initUser();
+            
+            // Баннер
+            changeBanner(0);
+            setInterval(nextBanner, 5000);
+            
+            // ===== ВСЕ ОБРАБОТЧИКИ КЛИКОВ =====
+            // Кнопки профиля
+            document.getElementById('avatarBtn').addEventListener('click', toggleProfile);
+            document.querySelectorAll('.balance-chip').forEach(el => {
+                el.addEventListener('click', showDepositModal);
+            });
+            
+            // Оверлей
+            document.getElementById('menuOverlay').addEventListener('click', closeProfile);
+            
+            // Плавающая кнопка пополнения
+            document.getElementById('floatingDeposit').addEventListener('click', showDepositModal);
+            
+            // Баннер
+            document.querySelector('.banner-slide').addEventListener('click', goToBonus);
+            
+            // Быстрый доступ (4 иконки)
+            document.querySelectorAll('.quick-item').forEach((el, index) => {
+                el.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (index === 0) goToMines();
+                    else if (index === 1) goToCrash();
+                    else if (index === 2) goToRoulette();
+                    else if (index === 3) showDepositModal();
+                });
+            });
+            
+            // Промо-карточки
+            document.querySelectorAll('.promo-card').forEach((el, index) => {
+                el.addEventListener('click', function() {
+                    if (index === 0) goToBonus();
+                    else if (index === 1) goToMines();
+                });
+            });
+            
+            // Популярные игры (горизонтальные)
+            document.querySelectorAll('.game-h-card').forEach((el, index) => {
+                el.addEventListener('click', function() {
+                    if (index === 0) goToMines();
+                    else if (index === 1) goToCrash();
+                    else if (index === 2) goToRoulette();
+                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
+                });
+            });
+            
+            // Сетка всех игр
+            document.querySelectorAll('.game-card').forEach((el, index) => {
+                el.addEventListener('click', function() {
+                    if (index === 0) goToMines();
+                    else if (index === 1) goToCrash();
+                    else if (index === 2) goToRoulette();
+                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
+                    else if (index === 4) showNotification('Скоро', 'Blackjack в разработке');
+                    else if (index === 5) showNotification('Скоро', 'Рулетка в разработке');
+                });
+            });
+            
+            // Нижняя навигация
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    const page = this.dataset.page;
+                    if (page === 'home') window.scrollTo({top: 0, behavior: 'smooth'});
+                    if (page === 'games') scrollToGames();
+                    if (page === 'profile') toggleProfile();
+                });
+            });
+            
+            // Ссылка "Все игры"
+            document.querySelector('.section-link').addEventListener('click', scrollToGames);
+        });
+    </script>
+
+    <!-- ===== HTML ===== -->
+    <div class="app">
+        <!-- Верхняя панель -->
+        <div class="top-bar">
+            <div class="logo-mini">ORANGEW1N</div>
+            <div class="top-actions">
+                <div class="balance-chip" id="balanceChip">
+                    <i class="fas fa-coins"></i>
+                    <span class="balance-number" id="mainBalance">15,780</span> ₽
+                </div>
+                <div class="avatar-btn" id="avatarBtn">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Баннер карусель -->
+        <div class="banner-carousel">
+            <div class="banner-slide" id="bannerSlideContainer">
+                <img id="bannerSlide" src="ban3.png" alt="banner">
+                <div class="banner-badge" id="bannerBadge">БОНУС +100%</div>
+            </div>
+            <div class="dots" id="dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <!-- Быстрый доступ -->
+        <div class="quick-grid">
+            <div class="quick-item">
+                <div class="quick-icon"><i class="fas fa-bomb"></i></div>
+                <span class="quick-label">Мины</span>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon"><i class="fas fa-rocket"></i></div>
+                <span class="quick-label">Краш</span>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon"><i class="fas fa-dice"></i></div>
+                <span class="quick-label">Multiplier</span>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon"><i class="fas fa-wallet"></i></div>
+                <span class="quick-label">Пополнить</span>
+            </div>
+        </div>
+
+        <!-- Промо-ряд -->
+        <div class="promo-row">
+            <div class="promo-card">
+                <div class="promo-title">100% бонус</div>
+                <div class="promo-sub">на первый депозит</div>
+                <span class="promo-btn">Забрать <i class="fas fa-arrow-right"></i></span>
+                <div class="promo-icon"><i class="fas fa-gift"></i></div>
+            </div>
+            <div class="promo-card">
+                <div class="promo-title">Игра недели</div>
+                <div class="promo-sub">Mines x5 множитель</div>
+                <span class="promo-btn">Играть <i class="fas fa-arrow-right"></i></span>
+                <div class="promo-icon"><i class="fas fa-bomb"></i></div>
+            </div>
+        </div>
+
+        <!-- Популярные игры -->
+        <div class="section-header">
+            <h2>🔥 Популярное</h2>
+            <span class="section-link">Все игры</span>
+        </div>
+        <div class="games-horizontal">
+            <div class="game-h-card">
+                <div class="game-h-icon"><i class="fas fa-bomb"></i></div>
+                <div class="game-h-title">Мины</div>
+                <div class="game-h-desc">до 5.00x</div>
+            </div>
+            <div class="game-h-card">
+                <div class="game-h-icon"><i class="fas fa-rocket"></i></div>
+                <div class="game-h-title">Краш</div>
+                <div class="game-h-desc">до 100x</div>
+            </div>
+            <div class="game-h-card">
+                <div class="game-h-icon"><i class="fas fa-dice"></i></div>
+                <div class="game-h-title">Multiplier X</div>
+                <div class="game-h-desc">угадай</div>
+            </div>
+            <div class="game-h-card">
+                <div class="game-h-icon"><i class="fas fa-cube"></i></div>
+                <div class="game-h-title">Dice</div>
+                <div class="game-h-desc">скоро</div>
+            </div>
+        </div>
+
+        <!-- Все игры -->
+        <div class="section-header" id="all-games">
+            <h2>🎮 Все игры</h2>
+        </div>
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-bomb"></i></div>
+                <div class="game-card-title">Мины</div>
+            </div>
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-rocket"></i></div>
+                <div class="game-card-title">Краш</div>
+            </div>
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-dice"></i></div>
+                <div class="game-card-title">Multiplier</div>
+            </div>
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-cube"></i></div>
+                <div class="game-card-title">Dice</div>
+            </div>
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-club"></i></div>
+                <div class="game-card-title">Blackjack</div>
+            </div>
+            <div class="game-card">
+                <div class="game-card-icon"><i class="fas fa-compass"></i></div>
+                <div class="game-card-title">Рулетка</div>
+            </div>
+        </div>
+
+        <!-- Плавающая кнопка -->
+        <button class="floating-deposit" id="floatingDeposit">
+            <i class="fas fa-bolt"></i> Пополнить баланс
+        </button>
+
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
+            </div>
+            <div class="nav-item" data-page="games">
+                <i class="fas fa-gamepad"></i>
+                <span>Игры</span>
+            </div>
+            <div class="nav-item" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Профиль</span>
+            </div>
+            <div class="nav-item" onclick="window.open('https://t.me/newsOrange', '_blank')">
+                <i class="fas fa-newspaper"></i>
+                <span>Новости</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Оверлей -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Профиль меню -->
+    <div class="profile-menu" id="profileMenu">
+        <div class="profile-header" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <div style="width:50px; height:50px; background:var(--gradient); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px;">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <h3 id="profileUsername" style="font-size:16px; margin-bottom:3px;">Гость</h3>
+                <p id="profileUserId" style="color:var(--text-secondary); font-size:12px;">ID: Не авторизован</p>
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px;">
+            <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;" id="profileBalance">15,780 ₽</div>
+                <div style="color:var(--text-secondary); font-size:11px;">Баланс</div>
+            </div>
+            <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;">47</div>
+                <div style="color:var(--text-secondary); font-size:11px;">Побед</div>
+            </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <button onclick="showDepositModal()" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-wallet"></i> Пополнить</button>
+            <button onclick="showWithdrawalModal()" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-money-bill-wave"></i> Вывести</button>
+            <button onclick="window.open('https://t.me/orangew1nsupport', '_blank')" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-headset"></i> Поддержка</button>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check"></i>
+        <div>
+            <div style="font-weight:800; font-size:16px;" id="notifTitle"></div>
+            <div style="font-size:14px; opacity:0.9;" id="notifMessage"></div>
+        </div>
+    </div>
+</body>
+</html>
