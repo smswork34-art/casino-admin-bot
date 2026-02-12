@@ -625,7 +625,7 @@
                     </button>
                     <button class="game-button cashout-button" id="cashoutButton" disabled>
                         <i class="fas fa-money-bill-wave"></i>
-                        ЗАБРАТЬ
+                        ЗАБРАТЬ 100₽
                     </button>
                     <button class="game-button auto-toggle" id="autoToggle">
                         <i class="fas fa-robot"></i>
@@ -738,6 +738,7 @@
             updateBalanceDisplay();
             updateAutoCashoutValue();
             updateProfileInfo();
+            updateCashoutButtonText();
             
             profileWinsEl.textContent = winsCount;
         }
@@ -778,15 +779,24 @@
             validateBet();
         }
         
+        function updateCashoutButtonText() {
+            const potentialWin = Math.floor(currentBetAmount * currentMultiplier);
+            cashoutButton.innerHTML = `<i class="fas fa-money-bill-wave"></i> ЗАБРАТЬ ${potentialWin.toLocaleString()}₽`;
+        }
+        
         function updateAutoCashoutValue() {
             autoCashoutValue = parseFloat(autoCashoutSlider.value);
             autoCashoutValueElement.textContent = autoCashoutValue.toFixed(2) + 'x';
+            if (autoCashoutEnabled) {
+                statusMessage.textContent = `Авто-вывод на ${autoCashoutValue.toFixed(2)}x`;
+            }
         }
         
         function setupEventListeners() {
             betAmountInput.addEventListener('input', () => {
                 currentBetAmount = parseInt(betAmountInput.value) || 0;
                 validateBet();
+                if (gameActive) updateCashoutButtonText();
             });
             
             document.querySelectorAll('.quick-amount').forEach(btn => {
@@ -801,6 +811,7 @@
                     }
                     betAmountInput.value = currentBetAmount;
                     validateBet();
+                    if (gameActive) updateCashoutButtonText();
                 });
             });
             
@@ -890,6 +901,7 @@
             autoCashoutSlider.disabled = true;
             
             clearGraph();
+            updateCashoutButtonText();
             
             gameInterval = setInterval(updateGame, 50);
         }
@@ -902,6 +914,7 @@
         function updateGame() {
             currentMultiplier += 0.01;
             multiplierDisplay.textContent = currentMultiplier.toFixed(2) + 'x';
+            updateCashoutButtonText();
             
             const progress = Math.min(1, (currentMultiplier - 1) / (crashPoint - 1));
             graphLine.style.transform = `scaleX(${progress})`;
@@ -982,6 +995,7 @@
                 statusMessage.textContent = autoCashoutEnabled 
                     ? `Авто-вывод на ${autoCashoutValue.toFixed(2)}x`
                     : 'Сделайте ставку и нажмите СТАРТ';
+                updateCashoutButtonText();
             }, 3000);
             
             validateBet();
