@@ -1045,6 +1045,7 @@
             if (!gameActive) return;
             
             const winAmount = Math.floor(currentBetAmount * currentMultiplier);
+            const profit = winAmount - currentBetAmount;
             
             currentBalance += winAmount;
             winsCount++;
@@ -1054,13 +1055,13 @@
             localStorage.setItem('mines_wins', winsCount);
             updateBalanceDisplay();
             
-            endGame(true, winAmount);
-            showResultModal(true, winAmount, currentMultiplier);
+            endGame(true, profit);
+            showResultModal(true, profit, currentMultiplier);
             
             saveStats();
         }
         
-        function endGame(isWin, winAmount) {
+        function endGame(isWin, profitAmount) {
             gameActive = false;
             
             startButton.disabled = false;
@@ -1079,8 +1080,8 @@
                 showResultModal(false, loseAmount, null);
                 saveStats();
             } else {
-                addHistoryItem(true, winAmount);
-                saveGameToDB(true, winAmount, winAmount - currentBetAmount);
+                addHistoryItem(true, profitAmount);
+                saveGameToDB(true, profitAmount + currentBetAmount, profitAmount);
             }
             
             currentMultiplier = 1.0;
@@ -1094,10 +1095,10 @@
             
             if (isWin) {
                 item.innerHTML = `<i class="fas fa-gem"></i> <span class="win-amount">+${amount.toLocaleString()}₽</span>`;
-                item.title = `Выигрыш: ${amount.toLocaleString()}₽ | Мин: ${selectedMinesCount} | Ячеек: ${revealedCells.length}`;
+                item.title = `Выигрыш: +${amount.toLocaleString()}₽ | Мин: ${selectedMinesCount} | Ячеек: ${revealedCells.length}`;
             } else {
                 item.innerHTML = `<i class="fas fa-bomb"></i> <span class="lose-amount">-${amount.toLocaleString()}₽</span>`;
-                item.title = `Проигрыш: ${amount.toLocaleString()}₽ | Мин: ${selectedMinesCount}`;
+                item.title = `Проигрыш: -${amount.toLocaleString()}₽ | Мин: ${selectedMinesCount}`;
             }
             
             historyList.insertBefore(item, historyList.firstChild);
