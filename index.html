@@ -595,11 +595,11 @@
         }, (payload) => {
             if (payload.new.status === 'completed' && payload.new.confirmed_at) {
                 const depositAmount = payload.new.amount;
-                const newBalance = payload.new.new_balance;
+                const newBalance = payload.new.new_balance; // Берём из БД
                 const processedKey = 'processed_' + payload.new.id;
                 
                 if (!localStorage.getItem(processedKey)) {
-                    // ИСПРАВЛЕНО: устанавливаем точный баланс из БД
+                    // УСТАНАВЛИВАЕМ ТОЧНЫЙ БАЛАНС ИЗ БД
                     currentBalance = newBalance;
                     localStorage.setItem('user_balance', currentBalance);
                     updateBalanceDisplay();
