@@ -424,7 +424,7 @@
         const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         
-        // Реквизиты для оплаты (ИЗМЕНИ НА СВОИ!)
+        // Реквизиты для оплаты
         const SBP_DETAILS = {
             phone: '+7 (952) 658-60-91',
             bank: 'Т-Банк',
@@ -439,7 +439,7 @@
         let selectedAmount = 0;
         let paymentId = null;
         let countdownTimer = null;
-        let timeLeft = 900; // 15 минут в секундах
+        let timeLeft = 900;
         let subscription = null;
         
         // Элементы
@@ -455,18 +455,19 @@
         
         // Получаем данные пользователя
         function getUserData() {
-            const userId = localStorage.getItem('user_id') || 'user_' + Math.floor(Math.random() * 10000);
-            const username = localStorage.getItem('username') || 'Игрок';
-            const currentBalance = parseInt(localStorage.getItem('user_balance')) || 15780;
-            
-            if (!localStorage.getItem('user_id')) {
-                localStorage.setItem('user_id', userId);
-                localStorage.setItem('user_balance', currentBalance);
-                localStorage.setItem('username', username);
+            const userId = localStorage.getItem('user_id');
+            if (!userId) {
+                const newUserId = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                localStorage.setItem('user_id', newUserId);
+                localStorage.setItem('username', 'Игрок');
+                localStorage.setItem('user_balance', '0'); // ВАЖНО: стартовый баланс 0
             }
             
+            const username = localStorage.getItem('username') || 'Игрок';
+            const currentBalance = parseInt(localStorage.getItem('user_balance')) || 0;
+            
             return {
-                id: userId,
+                id: localStorage.getItem('user_id'),
                 username: username,
                 current_balance: currentBalance
             };
@@ -505,10 +506,8 @@
                 return;
             }
             
-            // Генерируем уникальный ID платежа
             paymentId = 'SBP-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
             
-            // Показываем реквизиты
             detailsContent.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Сумма к оплате</div>
@@ -543,26 +542,19 @@
                 </div>
             `;
             
-            // Переключаем карты
             amountCard.style.display = 'none';
             detailsCard.classList.add('active');
             
-            // Запускаем таймер
             startCountdown();
-            
             showNotification('Реквизиты готовы', 'Скопируйте реквизиты для оплаты');
         });
         
-        // Отправка заявки в Supabase
+        // ========== ИСПРАВЛЕНО: Отправка заявки с new_balance = selectedAmount ==========
         async function sendDepositRequest() {
             try {
-                // Получаем текущий баланс пользователя
-                const currentBalance = currentUser.current_balance;
+                // ВАЖНО: new_balance = selectedAmount (НЕ ПРИБАВЛЯЕМ, А УСТАНАВЛИВАЕМ)
+                const newBalance = selectedAmount;
                 
-                // Рассчитываем новый баланс
-                const newBalance = currentBalance + selectedAmount;
-                
-                // Вставка заявки в базу данных
                 const { data, error } = await supabaseClient
                     .from('deposit_requests')
                     .insert([{
@@ -572,16 +564,13 @@
                         amount: selectedAmount,
                         phone: SBP_DETAILS.phone,
                         status: 'pending',
-                        current_balance: currentBalance, // Сохраняем текущий баланс
-                        new_balance: newBalance, // Рассчитываем новый баланс
+                        current_balance: currentUser.current_balance,
+                        new_balance: newBalance, // ← ТЕПЕРЬ ЗДЕСЬ СУММА ДЕПОЗИТА
                         created_at: new Date().toISOString()
                     }])
                     .select();
                 
-                if (error) {
-                    console.error('Supabase error:', error);
-                    throw new Error(`Ошибка базы данных: ${error.message}`);
-                }
+                if (error) throw error;
                 
                 console.log('Заявка создана:', data[0]);
                 return data[0];
@@ -594,28 +583,20 @@
         
         // Подписка на изменение статуса заявки
         function subscribeToStatus(requestId) {
-            if (subscription) {
-                subscription.unsubscribe();
-            }
+            if (subscription) subscription.unsubscribe();
             
             subscription = supabaseClient
                 .channel('deposit-status-' + requestId)
-                .on(
-                    'postgres_changes',
-                    {
-                        event: 'UPDATE',
-                        schema: 'public',
-                        table: 'deposit_requests',
-                        filter: `id=eq.${requestId}`
-                    },
-                    (payload) => {
-                        console.log('Статус изменился:', payload.new);
-                        handleStatusChange(payload.new);
-                    }
-                )
-                .subscribe((status) => {
-                    console.log('Subscription status:', status);
-                });
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'deposit_requests',
+                    filter: `id=eq.${requestId}`
+                }, (payload) => {
+                    console.log('Статус изменился:', payload.new);
+                    handleStatusChange(payload.new);
+                })
+                .subscribe();
             
             return subscription;
         }
@@ -623,7 +604,6 @@
         // Обработчик изменения статуса
         function handleStatusChange(request) {
             if (request.status === 'completed') {
-                // Успешное пополнение
                 statusIndicator.innerHTML = `
                     <div style="font-size: 60px; color: var(--success); margin-bottom: 20px;">
                         <i class="fas fa-check-circle"></i>
@@ -643,19 +623,14 @@
                     </button>
                 `;
                 
-                // Обновляем баланс в localStorage
-                const newBalance = request.new_balance;
-                localStorage.setItem('user_balance', newBalance);
+                // УСТАНАВЛИВАЕМ БАЛАНС РАВНЫЙ СУММЕ ДЕПОЗИТА
+                localStorage.setItem('user_balance', request.new_balance);
                 
-                if (subscription) {
-                    subscription.unsubscribe();
-                }
-                
+                if (subscription) subscription.unsubscribe();
                 showNotification('Успех!', 'Баланс пополнен. Приятной игры!');
             }
             
             if (request.status === 'rejected') {
-                // Отклонено админом
                 statusIndicator.innerHTML = `
                     <div style="font-size: 60px; color: var(--danger); margin-bottom: 20px;">
                         <i class="fas fa-times-circle"></i>
@@ -672,39 +647,29 @@
                     </button>
                 `;
                 
-                if (subscription) {
-                    subscription.unsubscribe();
-                }
-                
+                if (subscription) subscription.unsubscribe();
                 showNotification('Отклонено', 'Администратор отклонил заявку', 'error');
             }
         }
         
-        // Я оплатил
+        // ========== ИСПРАВЛЕНО: Я оплатил ==========
         paidBtn.addEventListener('click', async () => {
             paidBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка заявки...';
             paidBtn.disabled = true;
             
             try {
                 // Отправляем заявку в Supabase
-              const newBalance = selectedAmount; // НЕ прибавлять, а устанавливать сумму депозита
+                await sendDepositRequest();
                 
-                // Переключаем на индикатор ожидания
                 detailsCard.classList.remove('active');
                 statusIndicator.classList.add('active');
                 
-                // Останавливаем таймер
-                if (countdownTimer) {
-                    clearInterval(countdownTimer);
-                }
+                if (countdownTimer) clearInterval(countdownTimer);
                 
-                // Подписываемся на изменение статуса
                 subscribeToStatus(paymentId);
-                
                 showNotification('Заявка отправлена', 'Админ получил уведомление. Ожидайте подтверждения.');
                 
             } catch (error) {
-                // Обработка ошибок
                 paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> Я оплатил';
                 paidBtn.disabled = false;
                 showNotification('Ошибка', error.message || 'Не удалось отправить заявку', 'error');
@@ -715,6 +680,7 @@
         // Таймер
         function startCountdown() {
             timeLeft = 900;
+            if (countdownTimer) clearInterval(countdownTimer);
             
             countdownTimer = setInterval(() => {
                 timeLeft--;
@@ -733,13 +699,14 @@
             }, 1000);
         }
         
-        // Вспомогательные функции
-        function copyToClipboard(text) {
+        // Копирование в буфер
+        window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text)
                 .then(() => showNotification('Скопировано', 'Номер телефона скопирован'))
-                .catch(err => showNotification('Ошибка', 'Не удалось скопировать', 'error'));
-        }
+                .catch(() => showNotification('Ошибка', 'Не удалось скопировать', 'error'));
+        };
         
+        // Уведомления
         function showNotification(title, message, type = 'success') {
             document.getElementById('notifTitle').textContent = title;
             document.getElementById('notifMessage').textContent = message;
@@ -753,14 +720,11 @@
             }
             
             notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
+            setTimeout(() => notification.classList.remove('show'), 4000);
         }
         
         // Инициализация
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
             console.log('Страница оплаты СБП загружена');
         });
     </script>
