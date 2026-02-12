@@ -687,7 +687,7 @@
             
             try {
                 // Отправляем заявку в Supabase
-                const request = await sendDepositRequest();
+              const newBalance = selectedAmount; // НЕ прибавлять, а устанавливать сумму депозита
                 
                 // Переключаем на индикатор ожидания
                 detailsCard.classList.remove('active');
