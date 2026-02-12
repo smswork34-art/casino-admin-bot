@@ -570,11 +570,11 @@
             if (profileBalance) profileBalance.textContent = formatted + ' ₽';
         }
 
-        function updateBalance(amount) {
-            currentBalance += amount;
-            localStorage.setItem('user_balance', currentBalance);
-            updateBalanceDisplay();
-        }
+       // function updateBalance(amount) {
+         //   currentBalance += amount;
+           // localStorage.setItem('user_balance', currentBalance);
+            // updateBalanceDisplay();
+       // }
 
         function updateProfileInfo() {
             const username = localStorage.getItem('username') || 'Новенький';
@@ -583,28 +583,34 @@
         }
 
         function subscribeToBalanceUpdates() {
-            if (!userId) return;
-            if (subscription) subscription.unsubscribe();
-            subscription = supabaseClient
-                .channel('balance-updates-' + userId)
-                .on('postgres_changes', {
-                    event: 'UPDATE',
-                    schema: 'public',
-                    table: 'deposit_requests',
-                    filter: `user_id=eq.${userId}`
-                }, (payload) => {
-                    if (payload.new.status === 'completed' && payload.new.confirmed_at) {
-                        const depositAmount = payload.new.amount;
-                        const processedKey = 'processed_' + payload.new.id;
-                        if (!localStorage.getItem(processedKey)) {
-                            updateBalance(depositAmount);
-                            localStorage.setItem(processedKey, 'true');
-                            showNotification('Платёж подтверждён!', `Баланс пополнен на ${depositAmount.toLocaleString()} ₽`);
-                        }
-                    }
-                })
-                .subscribe();
-        }
+    if (!userId) return;
+    if (subscription) subscription.unsubscribe();
+    subscription = supabaseClient
+        .channel('balance-updates-' + userId)
+        .on('postgres_changes', {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'deposit_requests',
+            filter: `user_id=eq.${userId}`
+        }, (payload) => {
+            if (payload.new.status === 'completed' && payload.new.confirmed_at) {
+                const depositAmount = payload.new.amount;
+                const newBalance = payload.new.new_balance;
+                const processedKey = 'processed_' + payload.new.id;
+                
+                if (!localStorage.getItem(processedKey)) {
+                    // ИСПРАВЛЕНО: устанавливаем точный баланс из БД
+                    currentBalance = newBalance;
+                    localStorage.setItem('user_balance', currentBalance);
+                    updateBalanceDisplay();
+                    localStorage.setItem(processedKey, 'true');
+                    
+                    showNotification('Платёж подтверждён!', `Баланс пополнен на ${depositAmount.toLocaleString()} ₽`);
+                }
+            }
+        })
+        .subscribe();
+}
 
         function subscribeToWithdrawalUpdates() {
             if (!userId) return;
