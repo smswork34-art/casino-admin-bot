@@ -530,7 +530,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let currentBalance = 0;
+        let currentBalance = 0; // ИЗМЕНЕНО: стартовый баланс 0
         let userId = null;
         let subscription = null;
         let withdrawalSubscription = null;
@@ -545,13 +545,20 @@
                 localStorage.setItem('username', 'Игрок');
             }
             const savedBalance = localStorage.getItem('user_balance');
-            if (savedBalance) currentBalance = parseInt(savedBalance);
-            else localStorage.setItem('user_balance', currentBalance);
+            if (savedBalance) {
+                currentBalance = parseInt(savedBalance);
+            } else {
+                currentBalance = 0; // ИЗМЕНЕНО: стартовый баланс 0
+                localStorage.setItem('user_balance', currentBalance);
+            }
             
             updateBalanceDisplay();
             subscribeToBalanceUpdates();
             subscribeToWithdrawalUpdates();
             updateProfileInfo();
+            
+            // Добавляем обработчики после загрузки DOM
+            attachEventListeners();
         }
 
         function updateBalanceDisplay() {
@@ -570,7 +577,7 @@
         }
 
         function updateProfileInfo() {
-            const username = localStorage.getItem('username') || 'Гость';
+            const username = localStorage.getItem('username') || 'Новенький';
             document.getElementById('profileUsername').textContent = username;
             document.getElementById('profileUserId').textContent = `ID: ${userId}`;
         }
@@ -660,11 +667,11 @@
         function goToMines() { window.location.href = 'mines.html'; }
         function goToCrash() { window.location.href = 'crash.html'; }
         function goToDice() { window.location.href = 'dice.html'; }
+        function goToBonus() { window.location.href = 'bon.html'; }
         function goToSbp() { 
             localStorage.setItem('sbp_amount', 1000);
             window.location.href = 'sbp.html'; 
         }
-        function goToBonus() { window.location.href = 'bonus.html'; }
 
         // Скролл к играм
         function scrollToGames() {
@@ -676,9 +683,9 @@
         // Баннер карусель
         let bannerIndex = 0;
         const banners = [
-            { img: 'ban3.png', fallback: 'ничего', text: 'БОНУС +100%' },
-            { img: 'ban.png', fallback: 'ничего', text: 'ТУРНИР' },
-            { img: 'ban2.png', fallback: 'ничего', text: 'MINES' }
+            { img: 'ban3.png', fallback: '', text: 'БОНУС +100%' },
+            { img: 'ban.png', fallback: '', text: 'ТУРНИР' },
+            { img: 'ban2.png', fallback: '', text: 'MINES' }
         ];
 
         function changeBanner(index) {
@@ -956,29 +963,27 @@
             updateCommission();
         }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            initUser();
-            
-            // Баннер
-            changeBanner(0);
-            setInterval(nextBanner, 5000);
-            
-            // ===== ВСЕ ОБРАБОТЧИКИ КЛИКОВ =====
+        // ========== ПОДКЛЮЧЕНИЕ ОБРАБОТЧИКОВ ==========
+        function attachEventListeners() {
             // Кнопки профиля
-            document.getElementById('avatarBtn').addEventListener('click', toggleProfile);
+            const avatarBtn = document.getElementById('avatarBtn');
+            if (avatarBtn) avatarBtn.addEventListener('click', toggleProfile);
+            
             document.querySelectorAll('.balance-chip').forEach(el => {
                 el.addEventListener('click', showDepositModal);
             });
             
             // Оверлей
-            document.getElementById('menuOverlay').addEventListener('click', closeProfile);
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) menuOverlay.addEventListener('click', closeProfile);
             
             // Плавающая кнопка пополнения
-            document.getElementById('floatingDeposit').addEventListener('click', showDepositModal);
+            const floatingDeposit = document.getElementById('floatingDeposit');
+            if (floatingDeposit) floatingDeposit.addEventListener('click', showDepositModal);
             
             // Баннер
-            document.querySelector('.banner-slide').addEventListener('click', goToBonus);
+            const bannerSlide = document.querySelector('.banner-slide');
+            if (bannerSlide) bannerSlide.addEventListener('click', goToBonus);
             
             // Быстрый доступ (4 иконки)
             document.querySelectorAll('.quick-item').forEach((el, index) => {
@@ -1005,17 +1010,17 @@
                     if (index === 0) goToMines();
                     else if (index === 1) goToCrash();
                     else if (index === 2) goToDice();
-                    else if (index === 3) showNotification('Скоро', 'Gol в разработке');
+                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
                 });
             });
             
-            // Сетка всех игр (УБРАНЫ Blackjack и Рулетка)
+            // Сетка всех игр
             document.querySelectorAll('.game-card').forEach((el, index) => {
                 el.addEventListener('click', function() {
                     if (index === 0) goToMines();
                     else if (index === 1) goToCrash();
                     else if (index === 2) goToDice();
-                    else if (index === 3) showNotification('Скоро', 'Gol в разработке');
+                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
                 });
             });
             
@@ -1033,7 +1038,17 @@
             });
             
             // Ссылка "Все игры"
-            document.querySelector('.section-link').addEventListener('click', scrollToGames);
+            const sectionLink = document.querySelector('.section-link');
+            if (sectionLink) sectionLink.addEventListener('click', scrollToGames);
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initUser();
+            
+            // Баннер
+            changeBanner(0);
+            setInterval(nextBanner, 5000);
         });
     </script>
 
@@ -1125,7 +1140,7 @@
             </div>
             <div class="game-h-card">
                 <div class="game-h-icon"><i class="fas fa-cube"></i></div>
-                <div class="game-h-title">Gol</div>
+                <div class="game-h-title">Dice</div>
                 <div class="game-h-desc">скоро</div>
             </div>
         </div>
@@ -1149,7 +1164,7 @@
             </div>
             <div class="game-card">
                 <div class="game-card-icon"><i class="fas fa-cube"></i></div>
-                <div class="game-card-title">Gol</div>
+                <div class="game-card-title">Dice</div>
             </div>
         </div>
 
@@ -1172,7 +1187,7 @@
                 <i class="fas fa-user"></i>
                 <span>Профиль</span>
             </div>
-            <div class="nav-item" onclick="window.open('https://t.me/newsOrange', '_blank')">
+            <div class="nav-item" onclick="window.open('https://t.me/newsOrangeCasino', '_blank')">
                 <i class="fas fa-newspaper"></i>
                 <span>Новости</span>
             </div>
@@ -1189,7 +1204,7 @@
                 <i class="fas fa-user"></i>
             </div>
             <div>
-                <h3 id="profileUsername" style="font-size:16px; margin-bottom:3px;">Гость</h3>
+                <h3 id="profileUsername" style="font-size:16px; margin-bottom:3px;">Новенький</h3>
                 <p id="profileUserId" style="color:var(--text-secondary); font-size:12px;">ID: Не авторизован</p>
             </div>
         </div>
@@ -1199,14 +1214,14 @@
                 <div style="color:var(--text-secondary); font-size:11px;">Баланс</div>
             </div>
             <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
-                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;">47</div>
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;">0</div>
                 <div style="color:var(--text-secondary); font-size:11px;">Побед</div>
             </div>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
             <button onclick="showDepositModal()" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-wallet"></i> Пополнить</button>
             <button onclick="showWithdrawalModal()" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-money-bill-wave"></i> Вывести</button>
-            <button onclick="window.open('https://t.me/orangew1nsupport', '_blank')" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-headset"></i> Поддержка</button>
+            <button onclick="window.open('https://t.me/deachest', '_blank')" style="padding:12px; background:var(--bg-dark); border:1px solid var(--border); border-radius:12px; color:white; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; width:100%;"><i class="fas fa-headset"></i> Поддержка</button>
         </div>
     </div>
 
