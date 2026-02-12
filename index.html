@@ -530,7 +530,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let currentBalance = 15780;
+        let currentBalance = 0;
         let userId = null;
         let subscription = null;
         let withdrawalSubscription = null;
@@ -1045,7 +1045,7 @@
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
-                    <span class="balance-number" id="mainBalance">15,780</span> ₽
+                    <span class="balance-number" id="mainBalance">0</span> ₽
                 </div>
                 <div class="avatar-btn" id="avatarBtn">
                     <i class="fas fa-user"></i>
@@ -1195,7 +1195,7 @@
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px;">
             <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
-                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;" id="profileBalance">15,780 ₽</div>
+                <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:3px;" id="profileBalance">0 ₽</div>
                 <div style="color:var(--text-secondary); font-size:11px;">Баланс</div>
             </div>
             <div style="background:var(--bg-dark); padding:12px; border-radius:12px; text-align:center;">
