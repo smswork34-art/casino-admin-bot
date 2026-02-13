@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== ПОЛНОСТЬЮ СТИЛЬ ИЗ INDEX (5).html ===== */
+    
         * {
             margin: 0;
             padding: 0;
@@ -62,7 +62,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* Шапка */
+  
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -127,7 +127,7 @@
             cursor: pointer;
         }
 
-        /* Баннер */
+      
         .banner-carousel {
             padding: 16px 16px 8px;
             position: relative;
@@ -185,7 +185,7 @@
             background: var(--primary);
         }
 
-        /* Быстрый доступ */
+   
         .quick-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -229,7 +229,7 @@
             pointer-events: none;
         }
 
-        /* Промо-ряд */
+  
         .promo-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -285,7 +285,7 @@
             pointer-events: none;
         }
 
-        /* Популярные игры */
+   
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -356,7 +356,7 @@
             pointer-events: none;
         }
 
-        /* Сетка игр */
+        
         .games-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -393,7 +393,7 @@
             pointer-events: none;
         }
 
-        /* Плавающая кнопка */
+
         .floating-deposit {
             position: fixed;
             bottom: 95px;
@@ -422,7 +422,6 @@
             pointer-events: none;
         }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -466,7 +465,6 @@
             color: var(--primary);
         }
 
-        /* Профиль меню */
         .profile-menu {
             position: fixed;
             top: 70px;
@@ -866,7 +864,7 @@
             .bet-option { padding: 16px 8px; }
         }
 
-        /* Убираем лишнее */
+   
         .dice-section, .bet-section, .history-section {
             background: var(--card-bg);
         }
@@ -874,7 +872,7 @@
 </head>
 <body>
     <div class="app">
-        <!-- Верхняя панель -->
+       
         <div class="top-bar">
             <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
             <div class="top-actions">
@@ -888,7 +886,7 @@
             </div>
         </div>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ DICE -->
+     
         <div class="game-content">
             <h1 class="game-title">🎲 DICE</h1>
             <p class="game-subtitle">Чёт / Нечёт — множитель x2</p>
@@ -948,7 +946,6 @@
         </div>
     </div>
 
-    <!-- Оверлей и профиль -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="profile-menu" id="profileMenu">
         <div class="profile-header" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid var(--border);">
@@ -978,12 +975,12 @@
     </div>
 
     <script>
-        // ========== SUPABASE ==========
+  
         const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // ========== ПЕРЕМЕННЫЕ ==========
+
         let currentBalance = 0;
         let currentBetAmount = 100;
         let selectedBetType = 'even';
@@ -994,7 +991,7 @@
         let gamesPlayed = 0;
         let winsCount = 0;
         
-        // ========== ЭЛЕМЕНТЫ ==========
+
         const balanceEl = document.getElementById('mainBalance');
         const profileBalanceEl = document.getElementById('profileBalance');
         const profileWinsEl = document.getElementById('profileWins');
@@ -1006,7 +1003,7 @@
         const resultDisplay = document.getElementById('resultDisplay');
         const historyList = document.getElementById('historyList');
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
         function initGame() {
             userId = localStorage.getItem('user_id');
             if (!userId) {
@@ -1125,7 +1122,7 @@
             }
         }
         
-        // ========== ГЕНЕРАЦИЯ С ПОДКРУТКОЙ ==========
+
         function generateRiggedResult() {
             gamesPlayed++;
             
@@ -1160,7 +1157,7 @@
             return { diceResult, isWin, isEven: diceResult % 2 === 0 };
         }
         
-        // ========== БРОСОК ==========
+   
         async function rollDice() {
             if (isRolling || !selectedBetType || currentBetAmount > currentBalance) return;
             
@@ -1281,7 +1278,6 @@
             }
         }
         
-        // ========== ПРОФИЛЬ ==========
         let isProfileOpen = false;
         function toggleProfile() {
             const menu = document.getElementById('profileMenu');
@@ -1299,7 +1295,6 @@
             isProfileOpen = false;
         }
         
-        // ========== МОДАЛКИ ИЗ INDEX ==========
         function showDepositModal() {
             closeProfile();
             const isMobile = window.innerWidth <= 768;
@@ -1359,7 +1354,7 @@
             window.location.href = 'index.html';
         }
         
-        // ========== СТАРТ ==========
+   
         document.addEventListener('DOMContentLoaded', initGame);
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('user_balance', currentBalance);
