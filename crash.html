@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== ПОЛНОСТЬЮ СТИЛЬ ИЗ INDEX (5).html ===== */
+ 
         * {
             margin: 0;
             padding: 0;
@@ -63,7 +63,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* Шапка */
+ 
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -124,7 +124,7 @@
             cursor: pointer;
         }
 
-        /* ===== СПЕЦИФИЧЕСКИЕ СТИЛИ ДЛЯ CRASH (В СТИЛЕ INDEX) ===== */
+
         .game-content {
             padding: 20px 16px;
             background: var(--bg-dark);
@@ -461,7 +461,7 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
-        /* Профиль меню */
+
         .profile-menu {
             position: fixed;
             top: 70px;
@@ -557,7 +557,7 @@
 </head>
 <body>
     <div class="app">
-        <!-- Верхняя панель -->
+     
         <div class="top-bar">
             <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
             <div class="top-actions">
@@ -571,7 +571,7 @@
             </div>
         </div>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ CRASH -->
+  
         <div class="game-content">
             <h1 class="game-title">🚀 CRASH</h1>
             <p class="game-subtitle">Заберите деньги до краша!</p>
@@ -641,7 +641,7 @@
         </div>
     </div>
 
-    <!-- Оверлей и профиль -->
+
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="profile-menu" id="profileMenu">
         <div class="profile-header" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid var(--border);">
@@ -671,12 +671,12 @@
     </div>
 
     <script>
-        // ========== SUPABASE ==========
+
         const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // ========== ПЕРЕМЕННЫЕ ==========
+
         let currentBalance = 0;
         let currentBetAmount = 100;
         let userId = null;
@@ -699,7 +699,7 @@
         const MAX_CRASH_POINT = 100.0;
         const LOSS_BOOST = 0.2;
         
-        // ========== ЭЛЕМЕНТЫ ==========
+
         const balanceEl = document.getElementById('mainBalance');
         const profileBalanceEl = document.getElementById('profileBalance');
         const profileWinsEl = document.getElementById('profileWins');
@@ -716,7 +716,7 @@
         const crashPoints = document.getElementById('crashPoints');
         const historyList = document.getElementById('historyList');
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
         function initGame() {
             userId = localStorage.getItem('user_id');
             if (!userId) {
@@ -854,7 +854,7 @@
             }
         }
         
-        // ========== ГЕНЕРАЦИЯ КРАША С ПОДКРУТКОЙ ==========
+
         function generateCrashPoint() {
             gamesPlayed++;
             
@@ -879,7 +879,7 @@
             return crashPoint;
         }
         
-        // ========== ИГРОВАЯ ЛОГИКА ==========
+    
         function startGame() {
             if (gameActive || currentBetAmount > currentBalance) return;
             
@@ -1066,7 +1066,7 @@
             } catch(e) { console.error('DB error:', e); }
         }
         
-        // ========== МОДАЛКА РЕЗУЛЬТАТА ==========
+ 
         function showResultModal(isWin, amount, multiplier) {
             const modal = document.createElement('div');
             modal.style.cssText = `
@@ -1093,8 +1093,8 @@
             document.getElementById('closeModal').onclick = () => modal.remove();
             setTimeout(() => modal.remove(), 5000);
         }
+
         
-        // ========== ПРОФИЛЬ ==========
         let isProfileOpen = false;
         function toggleProfile() {
             const menu = document.getElementById('profileMenu');
@@ -1112,7 +1112,7 @@
             isProfileOpen = false;
         }
         
-        // ========== МОДАЛКИ ИЗ INDEX ==========
+
         function showDepositModal() {
             closeProfile();
             const isMobile = window.innerWidth <= 768;
@@ -1172,7 +1172,7 @@
             window.location.href = 'index.html';
         }
         
-        // ========== СТАРТ ==========
+
         document.addEventListener('DOMContentLoaded', function() {
             initGame();
             
