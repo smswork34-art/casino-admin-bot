@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ORANGEW1N — твоё казино</title>
+    <title>Bloody Casino</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
@@ -16,9 +16,9 @@
         }
 
         :root {
-            --primary: #FF6B00;
-            --primary-dark: #FF4500;
-            --primary-light: #FF8C00;
+            --primary: #FF0000;
+            --primary-dark: #CC0000;
+            --primary-light: #FF3333;
             --secondary: #00C2FF;
             --success: #00C853;
             --danger: #FF3D00;
@@ -30,7 +30,7 @@
             --text-primary: #FFFFFF;
             --text-secondary: #9B9B9B;
             --border: #252525;
-            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
             --bottom-nav: #0D0D0D;
             --card-bg: #1A1A1A;
@@ -147,7 +147,7 @@
             font-size: 12px;
             font-weight: 800;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(255,107,0,0.4);
+            box-shadow: 0 4px 10px rgba(255,0,0,0.4);
             pointer-events: none;
         }
 
@@ -205,7 +205,7 @@
         }
 
         .quick-icon i {
-            filter: drop-shadow(0 4px 6px rgba(255,107,0,0.3));
+            filter: drop-shadow(0 4px 6px rgba(255,0,0,0.3));
         }
 
         .quick-label {
@@ -394,7 +394,7 @@
             color: white;
             font-weight: 800;
             font-size: 16px;
-            box-shadow: 0 8px 25px rgba(255,107,0,0.5);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.5);
             border: none;
             z-index: 99;
             white-space: nowrap;
@@ -737,7 +737,7 @@
                         cursor: pointer; transition: all 0.3s;
                         width: ${isMobile ? '32px' : '36px'}; height: ${isMobile ? '32px' : '36px'}; display: flex;
                         align-items: center; justify-content: center;
-                        border-radius: 8px; background: rgba(255, 107, 0, 0.05);
+                        border-radius: 8px; background: rgba(255, 0, 0, 0.05);
                     " id="closeDepModal">&times;</div>
                     
                     <div style="text-align: center; margin-bottom: 15px; padding-right: ${isMobile ? '25px' : '30px'};">
@@ -836,7 +836,7 @@
             `;
             modal.innerHTML = `
                 <div style="background: var(--bg-card); border-radius: 16px; width: ${modalWidth}; max-width: 450px; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; max-height: 85vh;">
-                    <div style="position: absolute; top: ${isMobile ? '10px' : '15px'}; right: ${isMobile ? '10px' : '15px'}; color: var(--text-secondary); font-size: ${isMobile ? '20px' : '22px'}; cursor: pointer; width: ${isMobile ? '32px' : '36px'}; height: ${isMobile ? '32px' : '36px'}; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,107,0,0.05);" id="closeWithdrawalModal">&times;</div>
+                    <div style="position: absolute; top: ${isMobile ? '10px' : '15px'}; right: ${isMobile ? '10px' : '15px'}; color: var(--text-secondary); font-size: ${isMobile ? '20px' : '22px'}; cursor: pointer; width: ${isMobile ? '32px' : '36px'}; height: ${isMobile ? '32px' : '36px'}; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,0,0,0.05);" id="closeWithdrawalModal">&times;</div>
                     <div style="padding: ${padding} ${padding} 0 ${padding}; flex-shrink:0;">
                         <div style="text-align: center; margin-bottom: 15px; padding-right: ${isMobile ? '25px' : '30px'};">
                             <div style="width: ${isMobile ? '45px' : '50px'}; height: ${isMobile ? '45px' : '50px'}; background: var(--gradient); border-radius: ${isMobile ? '10px' : '12px'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: ${isMobile ? '18px' : '20px'}; color: white;"><i class="fas fa-money-bill-wave"></i></div>
@@ -1010,7 +1010,7 @@
                     if (index === 0) goToMines();
                     else if (index === 1) goToCrash();
                     else if (index === 2) goToDice();
-                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
+                    else if (index === 3) showNotification('Скоро', 'Gol в разработке');
                 });
             });
             
@@ -1020,7 +1020,7 @@
                     if (index === 0) goToMines();
                     else if (index === 1) goToCrash();
                     else if (index === 2) goToDice();
-                    else if (index === 3) showNotification('Скоро', 'Dice в разработке');
+                    else if (index === 3) showNotification('Скоро', 'Gol в разработке');
                 });
             });
             
@@ -1056,7 +1056,7 @@
     <div class="app">
       
         <div class="top-bar">
-            <div class="logo-mini">ORANGEW1N</div>
+            <div class="logo-mini">Bloody Casino</div>
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
@@ -1139,7 +1139,7 @@
             </div>
             <div class="game-h-card">
                 <div class="game-h-icon"><i class="fas fa-cube"></i></div>
-                <div class="game-h-title">Dice</div>
+                <div class="game-h-title">Gol</div>
                 <div class="game-h-desc">скоро</div>
             </div>
         </div>
@@ -1163,7 +1163,7 @@
             </div>
             <div class="game-card">
                 <div class="game-card-icon"><i class="fas fa-cube"></i></div>
-                <div class="game-card-title">Dice</div>
+                <div class="game-card-title">Gol</div>
             </div>
         </div>
 
