@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оплата через СБП | ORANGEW1N</title>
+    <title>Оплата через СБП | Bloody Casino</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --primary: #FF6B00; --primary-dark: #FF4500; --primary-light: #FF8C00;
+            --primary: #FF0000; --primary-dark: #CC0000; --primary-light: #FF3333;
             --secondary: #00C2FF; --success: #00C853; --danger: #FF3D00;
             --bg-dark: #0A0A0A; --bg-card: #111111; --bg-sidebar: #151515;
             --bg-header: #1A1A1A; --text-primary: #FFFFFF; --text-secondary: #AAAAAA;
-            --border: #2A2A2A; --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --border: #2A2A2A; --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
         }
         
@@ -174,7 +174,7 @@
         
         .primary-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
         }
         
         .primary-btn:disabled {
@@ -229,8 +229,8 @@
         }
         
         .copy-btn {
-            background: rgba(255, 107, 0, 0.1);
-            border: 1px solid rgba(255, 107, 0, 0.3);
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
             color: var(--primary);
             padding: 8px 20px;
             border-radius: 8px;
@@ -241,7 +241,7 @@
         }
         
         .copy-btn:hover {
-            background: rgba(255, 107, 0, 0.2);
+            background: rgba(255, 0, 0, 0.2);
         }
         
         .note {
@@ -272,7 +272,7 @@
         .spinner {
             width: 60px;
             height: 60px;
-            border: 4px solid rgba(255, 107, 0, 0.2);
+            border: 4px solid rgba(255, 0, 0, 0.2);
             border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -340,7 +340,7 @@
     
     <div class="container">
         <div class="header">
-            <div class="logo">ORANGEW1N</div>
+            <div class="logo">Bloody Casino</div>
             <div class="subtitle">Оплата через Систему Быстрых Платежей</div>
         </div>
         
@@ -429,7 +429,7 @@
             phone: '+7 (952) 658-60-91',
             bank: 'Т-Банк',
             recipient: 'Ранис Альгисович',
-            note: 'Оплата за пополнение баланса ORANGEW1N'
+            note: 'Оплата за пополнение баланса Bloody Casino'
         };
         
         // Инициализация Supabase клиента
@@ -703,7 +703,7 @@
         window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text)
                 .then(() => showNotification('Скопировано', 'Номер телефона скопирован'))
-                .catch(() => showNotification('Ошибка', 'Не удалось скопировать', 'error'));
+                .catch(() => showNotification('Ошибка', 'Не удалось копировать', 'error'));
         };
         
         // Уведомления
