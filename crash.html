@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ORANGEW1N — CRASH</title>
+    <title>Bloody Casino — CRASH</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
@@ -16,9 +16,9 @@
         }
 
         :root {
-            --primary: #FF6B00;
-            --primary-dark: #FF4500;
-            --primary-light: #FF8C00;
+            --primary: #FF0000;
+            --primary-dark: #CC0000;
+            --primary-light: #FF3333;
             --secondary: #00C2FF;
             --success: #00C853;
             --danger: #FF3D00;
@@ -30,7 +30,7 @@
             --text-primary: #FFFFFF;
             --text-secondary: #9B9B9B;
             --border: #252525;
-            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
             --bottom-nav: #0D0D0D;
             --card-bg: #1A1A1A;
@@ -181,7 +181,7 @@
             height: 2px;
             background: var(--primary);
             transform-origin: left center;
-            box-shadow: 0 0 15px rgba(255,107,0,0.5);
+            box-shadow: 0 0 15px rgba(255,0,0,0.5);
         }
 
         .crash-points {
@@ -275,7 +275,7 @@
 
         .amount-input-container:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(255,107,0,0.2);
+            box-shadow: 0 0 0 2px rgba(255,0,0,0.2);
         }
 
         .amount-input {
@@ -310,7 +310,7 @@
         }
 
         .quick-amount:hover {
-            background: rgba(255,107,0,0.1);
+            background: rgba(255,0,0,0.1);
             border-color: var(--primary);
             color: var(--text-primary);
         }
@@ -368,7 +368,7 @@
 
         .start-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,107,0,0.4);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.4);
         }
 
         .cashout-button {
@@ -543,7 +543,7 @@
             background: var(--primary);
             cursor: pointer;
             border: 3px solid var(--bg-dark);
-            box-shadow: 0 0 10px rgba(255,107,0,0.5);
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
         }
 
         @media (max-width: 400px) {
@@ -559,7 +559,7 @@
     <div class="app">
      
         <div class="top-bar">
-            <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
+            <div class="logo-mini" onclick="window.location.href='index.html'">Bloody Casino</div>
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
@@ -1120,7 +1120,7 @@
             modal.style.cssText = `position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; justify-content:center; align-items:center; z-index:1002; backdrop-filter:blur(3px); padding:15px; overflow-y:auto;`;
             modal.innerHTML = `
                 <div style="background: var(--bg-card); border-radius:16px; padding:${isMobile?'20px':'25px'}; width:${isMobile?'95%':'380px'}; max-width:420px; border:1px solid var(--border); box-shadow:0 15px 40px rgba(0,0,0,0.5); position:relative; max-height:90vh; overflow-y:auto;">
-                    <div style="position:absolute; top:${isMobile?'10px':'15px'}; right:${isMobile?'10px':'15px'}; color:var(--text-secondary); font-size:${isMobile?'20px':'22px'}; cursor:pointer; width:${isMobile?'32px':'36px'}; height:${isMobile?'32px':'36px'}; display:flex; align-items:center; justify-content:center; border-radius:8px; background:rgba(255,107,0,0.05);" id="closeDepModal">&times;</div>
+                    <div style="position:absolute; top:${isMobile?'10px':'15px'}; right:${isMobile?'10px':'15px'}; color:var(--text-secondary); font-size:${isMobile?'20px':'22px'}; cursor:pointer; width:${isMobile?'32px':'36px'}; height:${isMobile?'32px':'36px'}; display:flex; align-items:center; justify-content:center; border-radius:8px; background:rgba(255,0,0,0.05);" id="closeDepModal">&times;</div>
                     <div style="text-align:center; margin-bottom:15px; padding-right:${isMobile?'25px':'30px'};">
                         <div style="width:${isMobile?'45px':'50px'}; height:${isMobile?'45px':'50px'}; background:var(--gradient); border-radius:${isMobile?'10px':'12px'}; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:${isMobile?'18px':'20px'}; color:white;"><i class="fas fa-wallet"></i></div>
                         <h2 style="color:var(--text-primary); margin-bottom:5px; font-size:${isMobile?'18px':'20px'};">Пополнение через СБП</h2>
