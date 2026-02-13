@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ORANGEW1N — DICE</title>
+    <title>Bloody Casino — DICE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
@@ -16,9 +16,9 @@
         }
 
         :root {
-            --primary: #FF6B00;
-            --primary-dark: #FF4500;
-            --primary-light: #FF8C00;
+            --primary: #FF0000;
+            --primary-dark: #CC0000;
+            --primary-light: #FF3333;
             --secondary: #00C2FF;
             --success: #00C853;
             --danger: #FF3D00;
@@ -30,7 +30,7 @@
             --text-primary: #FFFFFF;
             --text-secondary: #9B9B9B;
             --border: #252525;
-            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
             --bottom-nav: #0D0D0D;
             --card-bg: #1A1A1A;
@@ -161,7 +161,7 @@
             font-size: 12px;
             font-weight: 800;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(255,107,0,0.4);
+            box-shadow: 0 4px 10px rgba(255,0,0,0.4);
             pointer-events: none;
         }
 
@@ -219,7 +219,7 @@
         }
 
         .quick-icon i {
-            filter: drop-shadow(0 4px 6px rgba(255,107,0,0.3));
+            filter: drop-shadow(0 4px 6px rgba(255,0,0,0.3));
         }
 
         .quick-label {
@@ -408,7 +408,7 @@
             color: white;
             font-weight: 800;
             font-size: 16px;
-            box-shadow: 0 8px 25px rgba(255,107,0,0.5);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.5);
             border: none;
             z-index: 99;
             white-space: nowrap;
@@ -586,7 +586,7 @@
             font-size: 42px;
             font-weight: 900;
             color: var(--primary);
-            text-shadow: 0 0 15px rgba(255,107,0,0.5);
+            text-shadow: 0 0 15px rgba(255,0,0,0.5);
             transition: transform 0.1s;
             transform-style: preserve-3d;
             box-shadow: 0 6px 12px rgba(0,0,0,0.4);
@@ -597,11 +597,11 @@
         }
 
         @keyframes diceHorizontal {
-            0% { transform: rotateY(0deg) scale(1); box-shadow: 0 0 10px rgba(255,107,0,0.3); }
-            25% { transform: rotateY(90deg) scale(1.05); box-shadow: 0 0 20px rgba(255,107,0,0.5); }
-            50% { transform: rotateY(180deg) scale(1); box-shadow: 0 0 10px rgba(255,107,0,0.3); }
-            75% { transform: rotateY(270deg) scale(1.05); box-shadow: 0 0 20px rgba(255,107,0,0.5); }
-            100% { transform: rotateY(360deg) scale(1); box-shadow: 0 0 10px rgba(255,107,0,0.3); }
+            0% { transform: rotateY(0deg) scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+            25% { transform: rotateY(90deg) scale(1.05); box-shadow: 0 0 20px rgba(255,0,0,0.5); }
+            50% { transform: rotateY(180deg) scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+            75% { transform: rotateY(270deg) scale(1.05); box-shadow: 0 0 20px rgba(255,0,0,0.5); }
+            100% { transform: rotateY(360deg) scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.3); }
         }
 
         .result-display {
@@ -656,7 +656,7 @@
 
         .amount-input-container:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(255,107,0,0.2);
+            box-shadow: 0 0 0 2px rgba(255,0,0,0.2);
         }
 
         .amount-input {
@@ -691,7 +691,7 @@
         }
 
         .quick-amount:hover {
-            background: rgba(255,107,0,0.1);
+            background: rgba(255,0,0,0.1);
             border-color: var(--primary);
             color: var(--text-primary);
         }
@@ -715,12 +715,12 @@
 
         .bet-option:hover {
             border-color: var(--primary);
-            background: rgba(255,107,0,0.05);
+            background: rgba(255,0,0,0.05);
         }
 
         .bet-option.selected {
             border-color: var(--primary);
-            background: rgba(255,107,0,0.1);
+            background: rgba(255,0,0,0.1);
         }
 
         .bet-icon {
@@ -769,7 +769,7 @@
 
         .roll-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,107,0,0.4);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.4);
         }
 
         .roll-button:disabled {
@@ -874,7 +874,7 @@
     <div class="app">
        
         <div class="top-bar">
-            <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
+            <div class="logo-mini" onclick="window.location.href='index.html'">Bloody Casino</div>
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
@@ -1263,7 +1263,7 @@
                 const confetti = document.createElement('div');
                 confetti.style.cssText = `
                     position: fixed; width: 8px; height: 8px;
-                    background: ${['#FF6B00','#FF4500','#FF8C00','#00C2FF','#00C853'][Math.floor(Math.random()*5)]};
+                    background: ${['#FF0000','#CC0000','#FF3333','#00C2FF','#00C853'][Math.floor(Math.random()*5)]};
                     border-radius: 50%; z-index: 1000; pointer-events: none;
                     top: 50%; left: 50%;
                 `;
@@ -1302,7 +1302,7 @@
             modal.style.cssText = `position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; justify-content:center; align-items:center; z-index:1002; backdrop-filter:blur(3px); padding:15px; overflow-y:auto;`;
             modal.innerHTML = `
                 <div style="background: var(--bg-card); border-radius:16px; padding:${isMobile?'20px':'25px'}; width:${isMobile?'95%':'380px'}; max-width:420px; border:1px solid var(--border); box-shadow:0 15px 40px rgba(0,0,0,0.5); position:relative; max-height:90vh; overflow-y:auto;">
-                    <div style="position:absolute; top:${isMobile?'10px':'15px'}; right:${isMobile?'10px':'15px'}; color:var(--text-secondary); font-size:${isMobile?'20px':'22px'}; cursor:pointer; width:${isMobile?'32px':'36px'}; height:${isMobile?'32px':'36px'}; display:flex; align-items:center; justify-content:center; border-radius:8px; background:rgba(255,107,0,0.05);" id="closeDepModal">&times;</div>
+                    <div style="position:absolute; top:${isMobile?'10px':'15px'}; right:${isMobile?'10px':'15px'}; color:var(--text-secondary); font-size:${isMobile?'20px':'22px'}; cursor:pointer; width:${isMobile?'32px':'36px'}; height:${isMobile?'32px':'36px'}; display:flex; align-items:center; justify-content:center; border-radius:8px; background:rgba(255,0,0,0.05);" id="closeDepModal">&times;</div>
                     <div style="text-align:center; margin-bottom:15px; padding-right:${isMobile?'25px':'30px'};">
                         <div style="width:${isMobile?'45px':'50px'}; height:${isMobile?'45px':'50px'}; background:var(--gradient); border-radius:${isMobile?'10px':'12px'}; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:${isMobile?'18px':'20px'}; color:white;"><i class="fas fa-wallet"></i></div>
                         <h2 style="color:var(--text-primary); margin-bottom:5px; font-size:${isMobile?'18px':'20px'};">Пополнение через СБП</h2>
