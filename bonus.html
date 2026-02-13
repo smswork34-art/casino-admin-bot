@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ORANGEW1N — БОНУСЫ</title>
+    <title>Bloody Casino — БОНУСЫ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
@@ -16,9 +16,9 @@
         }
 
         :root {
-            --primary: #FF6B00;
-            --primary-dark: #FF4500;
-            --primary-light: #FF8C00;
+            --primary: #FF0000;
+            --primary-dark: #CC0000;
+            --primary-light: #FF3333;
             --secondary: #00C2FF;
             --success: #00C853;
             --danger: #FF3D00;
@@ -30,11 +30,11 @@
             --text-primary: #FFFFFF;
             --text-secondary: #9B9B9B;
             --border: #252525;
-            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
             --bottom-nav: #0D0D0D;
             --card-bg: #1A1A1A;
-            --bonus-gradient: linear-gradient(135deg, #FFD700, #FFA500);
+            --bonus-gradient: linear-gradient(135deg, #FF0000, #CC0000);
         }
 
         body {
@@ -165,7 +165,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(255,215,0,0.1), transparent 70%);
+            background: radial-gradient(circle at 20% 50%, rgba(255,0,0,0.1), transparent 70%);
             pointer-events: none;
         }
 
@@ -185,8 +185,8 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            color: var(--bg-dark);
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            color: white;
+            box-shadow: 0 8px 20px rgba(255,0,0,0.3);
         }
 
         .bonus-title {
@@ -241,7 +241,7 @@
             background: var(--bonus-gradient);
             border: none;
             border-radius: 12px;
-            color: var(--bg-dark);
+            color: white;
             font-weight: 900;
             font-size: 16px;
             cursor: pointer;
@@ -255,7 +255,7 @@
 
         .bonus-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.4);
         }
 
         .bonus-button:disabled {
@@ -299,12 +299,12 @@
         }
 
         .card-icon.purple {
-            background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+            background: linear-gradient(135deg, #FF0000, #CC0000);
         }
 
         .card-icon.gold {
             background: var(--bonus-gradient);
-            color: var(--bg-dark);
+            color: white;
         }
 
         .card-title {
@@ -363,7 +363,7 @@
         }
 
         .badge {
-            background: rgba(255,107,0,0.2);
+            background: rgba(255,0,0,0.2);
             border: 1px solid var(--primary);
             border-radius: 100px;
             padding: 4px 12px;
@@ -382,7 +382,7 @@
         }
 
         .game-of-week {
-            background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,61,0,0.1));
+            background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,61,0,0.1));
             border: 2px solid var(--primary);
             border-radius: 20px;
             padding: 20px;
@@ -421,14 +421,14 @@
         .week-icon {
             width: 80px;
             height: 80px;
-            background: var(--mine-gradient);
+            background: var(--gradient);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 36px;
             color: white;
-            box-shadow: 0 8px 20px rgba(255,61,0,0.3);
+            box-shadow: 0 8px 20px rgba(255,0,0,0.3);
         }
 
         .week-info {
@@ -465,7 +465,7 @@
 
         .week-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,107,0,0.4);
+            box-shadow: 0 8px 20px rgba(255,0,0,0.4);
         }
 
      
@@ -552,7 +552,7 @@
     <div class="app">
     
         <div class="top-bar">
-            <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
+            <div class="logo-mini" onclick="window.location.href='index.html'">Bloody Casino</div>
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
