@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ORANGEW1N — БОНУСЫ</title>
+    <title>Bloody Casino — БОНУСЫ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== ПОЛНОСТЬЮ СТИЛЬ ИЗ INDEX (5).html ===== */
+     
         * {
             margin: 0;
             padding: 0;
@@ -16,9 +16,9 @@
         }
 
         :root {
-            --primary: #FF6B00;
-            --primary-dark: #FF4500;
-            --primary-light: #FF8C00;
+            --primary: #FF0000;
+            --primary-dark: #CC0000;
+            --primary-light: #FF3333;
             --secondary: #00C2FF;
             --success: #00C853;
             --danger: #FF3D00;
@@ -30,11 +30,11 @@
             --text-primary: #FFFFFF;
             --text-secondary: #9B9B9B;
             --border: #252525;
-            --gradient: linear-gradient(135deg, #FF6B00, #FF4500);
+            --gradient: linear-gradient(135deg, #FF0000, #CC0000);
             --gradient-blue: linear-gradient(135deg, #00C2FF, #0088CC);
             --bottom-nav: #0D0D0D;
             --card-bg: #1A1A1A;
-            --bonus-gradient: linear-gradient(135deg, #FFD700, #FFA500);
+            --bonus-gradient: linear-gradient(135deg, #FF0000, #CC0000);
         }
 
         body {
@@ -62,7 +62,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* Шапка */
+
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -123,7 +123,7 @@
             cursor: pointer;
         }
 
-        /* ===== СПЕЦИФИЧЕСКИЕ СТИЛИ ДЛЯ БОНУСОВ ===== */
+    
         .bonus-content {
             padding: 20px 16px;
             background: var(--bg-dark);
@@ -165,7 +165,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(255,215,0,0.1), transparent 70%);
+            background: radial-gradient(circle at 20% 50%, rgba(255,0,0,0.1), transparent 70%);
             pointer-events: none;
         }
 
@@ -185,8 +185,8 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            color: var(--bg-dark);
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            color: white;
+            box-shadow: 0 8px 20px rgba(255,0,0,0.3);
         }
 
         .bonus-title {
@@ -241,7 +241,7 @@
             background: var(--bonus-gradient);
             border: none;
             border-radius: 12px;
-            color: var(--bg-dark);
+            color: white;
             font-weight: 900;
             font-size: 16px;
             cursor: pointer;
@@ -255,7 +255,7 @@
 
         .bonus-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.4);
         }
 
         .bonus-button:disabled {
@@ -299,12 +299,12 @@
         }
 
         .card-icon.purple {
-            background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+            background: linear-gradient(135deg, #FF0000, #CC0000);
         }
 
         .card-icon.gold {
             background: var(--bonus-gradient);
-            color: var(--bg-dark);
+            color: white;
         }
 
         .card-title {
@@ -363,7 +363,7 @@
         }
 
         .badge {
-            background: rgba(255,107,0,0.2);
+            background: rgba(255,0,0,0.2);
             border: 1px solid var(--primary);
             border-radius: 100px;
             padding: 4px 12px;
@@ -382,7 +382,7 @@
         }
 
         .game-of-week {
-            background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,61,0,0.1));
+            background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,61,0,0.1));
             border: 2px solid var(--primary);
             border-radius: 20px;
             padding: 20px;
@@ -421,14 +421,14 @@
         .week-icon {
             width: 80px;
             height: 80px;
-            background: var(--mine-gradient);
+            background: var(--gradient);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 36px;
             color: white;
-            box-shadow: 0 8px 20px rgba(255,61,0,0.3);
+            box-shadow: 0 8px 20px rgba(255,0,0,0.3);
         }
 
         .week-info {
@@ -465,10 +465,10 @@
 
         .week-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,107,0,0.4);
+            box-shadow: 0 8px 20px rgba(255,0,0,0.4);
         }
 
-        /* Профиль меню */
+     
         .profile-menu {
             position: fixed;
             top: 70px;
@@ -550,9 +550,9 @@
 </head>
 <body>
     <div class="app">
-        <!-- Верхняя панель -->
+    
         <div class="top-bar">
-            <div class="logo-mini" onclick="window.location.href='index.html'">ORANGEW1N</div>
+            <div class="logo-mini" onclick="window.location.href='index.html'">Bloody Casino</div>
             <div class="top-actions">
                 <div class="balance-chip" id="balanceChip">
                     <i class="fas fa-coins"></i>
@@ -564,12 +564,12 @@
             </div>
         </div>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ БОНУСЫ -->
+       
         <div class="bonus-content">
             <h1 class="page-title">🎁 БОНУСЫ</h1>
             <p class="page-subtitle">Ежедневные награды и специальные предложения</p>
             
-            <!-- ЕЖЕДНЕВНЫЙ БОНУС 1 РУБЛЬ -->
+        
             <div class="daily-bonus">
                 <div class="bonus-header">
                     <div class="bonus-icon">
@@ -596,7 +596,7 @@
                 </button>
             </div>
             
-            <!-- БОНУС НА ПЕРВЫЙ ДЕПОЗИТ 100% -->
+        
             <div class="bonus-card">
                 <div class="bonus-card-header">
                     <div class="card-icon gold">
@@ -632,7 +632,7 @@
                 </button>
             </div>
             
-            <!-- АКТИВНЫЙ БОНУС (ОТЫГРЫШ) -->
+       
             <div class="bonus-card" id="activeBonusCard" style="display: none;">
                 <div class="bonus-card-header">
                     <div class="card-icon purple">
@@ -669,7 +669,7 @@
                 </div>
             </div>
             
-            <!-- ИГРА НЕДЕЛИ: MINES x5 -->
+      
             <div class="game-of-week">
                 <div class="week-title">
                     <i class="fas fa-crown"></i> ИГРА НЕДЕЛИ
@@ -688,7 +688,7 @@
                 </div>
             </div>
             
-            <!-- ИСТОРИЯ БОНУСОВ -->
+          
             <div class="bonus-card" style="background: var(--bg-dark);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <span style="font-weight: 800;">📋 История бонусов</span>
@@ -701,7 +701,7 @@
         </div>
     </div>
 
-    <!-- Оверлей и профиль -->
+ 
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="profile-menu" id="profileMenu">
         <div class="profile-header" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid var(--border);">
@@ -731,16 +731,16 @@
     </div>
 
     <script>
-        // ========== SUPABASE ==========
+       
         const SUPABASE_URL = 'https://lllmhsatptxscjjoluov.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsbG1oc2F0cHR4c2Nqam9sdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMjQ3NTksImV4cCI6MjA4NTkwMDc1OX0.wtzQkF54-HdALvDixNADLwoVqdw7AIPSOM4hmBISQ8U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // ========== ПЕРЕМЕННЫЕ ==========
+   
         let currentBalance = 0;
         let userId = null;
         
-        // Бонусы
+
         let dailyBonusAvailable = false;
         let dailyLastClaim = null;
         let dailyTimer = null;
@@ -750,7 +750,7 @@
         
         let bonusHistory = [];
         
-        // ========== ЭЛЕМЕНТЫ ==========
+
         const balanceEl = document.getElementById('mainBalance');
         const profileBalanceEl = document.getElementById('profileBalance');
         const profileBonusEl = document.getElementById('profileBonus');
@@ -765,7 +765,7 @@
         const bonusStatsEl = document.getElementById('bonusStats');
         const firstDepositStatus = document.getElementById('firstDepositStatus');
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
         function initBonuses() {
             userId = localStorage.getItem('user_id');
             if (!userId) {
@@ -786,24 +786,23 @@
             loadActiveBonus();
             loadBonusHistory();
             
-            // Запускаем таймер ежедневного бонуса
+
             startDailyTimer();
             
-            // Подписываемся на обновления баланса для отыгрыша
             subscribeToGameUpdates();
         }
         
         function loadBonusData() {
-            // Загружаем статус ежедневного бонуса
+    
             const lastClaim = localStorage.getItem('daily_bonus_last');
             if (lastClaim) {
                 dailyLastClaim = new Date(parseInt(lastClaim));
             }
             
-            // Загружаем статус бонуса на первый депозит
+      
             firstDepositBonusClaimed = localStorage.getItem('first_deposit_bonus_claimed') === 'true';
             
-            // Загружаем активный бонус
+   
             const savedBonus = localStorage.getItem('active_bonus');
             if (savedBonus) {
                 try {
@@ -811,7 +810,7 @@
                 } catch(e) {}
             }
             
-            // Загружаем историю бонусов
+
             const savedHistory = localStorage.getItem('bonus_history');
             if (savedHistory) {
                 try {
@@ -846,7 +845,7 @@
             profileBonusEl.textContent = bonusHistory.length;
         }
         
-        // ========== ЕЖЕДНЕВНЫЙ БОНУС 1 РУБЛЬ ==========
+
         function checkDailyBonus() {
             if (!dailyLastClaim) {
                 dailyBonusAvailable = true;
@@ -898,27 +897,27 @@
         function claimDailyBonus() {
             if (!dailyBonusAvailable) return;
             
-            // Начисляем 1 рубль
+      
             currentBalance += 1;
             localStorage.setItem('user_balance', currentBalance);
             updateBalanceDisplay();
             
-            // Обновляем время последнего получения
+    
             dailyLastClaim = new Date();
             dailyLastClaim.setHours(0, 0, 0, 0);
             localStorage.setItem('daily_bonus_last', dailyLastClaim.getTime().toString());
             
-            // Добавляем в историю
+   
             addBonusHistory('Ежедневный бонус', 1);
             
-            // Показываем уведомление
+           
             showNotification('Ежедневный бонус!', 'Вы получили 1 ₽');
             
             dailyBonusAvailable = false;
             claimDailyBtn.disabled = true;
         }
         
-        // ========== БОНУС НА ПЕРВЫЙ ДЕПОЗИТ 100% ==========
+ 
         function checkFirstDepositBonus() {
             if (firstDepositBonusClaimed) {
                 firstDepositStatus.innerHTML = `
@@ -931,12 +930,12 @@
                 return;
             }
             
-            // Проверяем, был ли депозит от 10000
+      
             const lastDeposit = localStorage.getItem('last_deposit_amount');
             const depositProcessed = localStorage.getItem('first_deposit_processed');
             
             if (lastDeposit && parseInt(lastDeposit) >= 10000 && !depositProcessed) {
-                // Автоматически активируем бонус при депозите от 10000
+      
                 activateFirstDepositBonus(parseInt(lastDeposit));
                 localStorage.setItem('first_deposit_processed', 'true');
             }
@@ -951,8 +950,8 @@
         function activateFirstDepositBonus(depositAmount) {
             if (firstDepositBonusClaimed) return;
             
-            const bonusAmount = depositAmount; // 100% от депозита
-            const wagerRequired = Math.floor(bonusAmount * 0.5); // 50% от суммы бонуса
+            const bonusAmount = depositAmount; 
+            const wagerRequired = Math.floor(bonusAmount * 0.5);
             
             activeBonus = {
                 type: 'first_deposit',
@@ -963,15 +962,15 @@
                 activatedAt: new Date().toISOString()
             };
             
-            // Начисляем бонус на баланс
+    
             currentBalance += bonusAmount;
             localStorage.setItem('user_balance', currentBalance);
             updateBalanceDisplay();
             
-            // Отмечаем бонус как полученный
+ 
             firstDepositBonusClaimed = true;
             
-            // Добавляем в историю
+
             addBonusHistory('100% на первый депозит', bonusAmount);
             
             saveBonusData();
@@ -980,7 +979,7 @@
             showNotification('Бонус активирован!', `+${bonusAmount.toLocaleString()} ₽, отыгрыш: ${wagerRequired.toLocaleString()} ₽`);
         }
         
-        // ========== АКТИВНЫЙ БОНУС И ОТЫГРЫШ ==========
+
         function loadActiveBonus() {
             if (activeBonus) {
                 activeBonusCard.style.display = 'block';
@@ -995,7 +994,7 @@
                 remainingWagerEl.textContent = `${remaining.toLocaleString()} ₽`;
                 
                 if (activeBonus.wagered >= activeBonus.wager) {
-                    // Бонус отыгран
+               
                     setTimeout(() => {
                         activeBonus = null;
                         saveBonusData();
@@ -1007,17 +1006,17 @@
                 activeBonusCard.style.display = 'none';
             }
         }
+
         
-        // Подписка на игры для отыгрыша
         function subscribeToGameUpdates() {
-            // Слушаем изменения баланса в localStorage
+   
             window.addEventListener('storage', (e) => {
                 if (e.key === 'user_balance') {
                     const oldBalance = currentBalance;
                     const newBalance = parseInt(e.newValue);
                     
                     if (activeBonus && newBalance < oldBalance) {
-                        // Игрок сделал ставку - засчитываем в отыгрыш
+
                         const betAmount = oldBalance - newBalance;
                         addWager(betAmount);
                     }
@@ -1027,7 +1026,7 @@
                 }
             });
             
-            // Также слушаем изменения на этой вкладке
+      
             const originalSetItem = localStorage.setItem;
             localStorage.setItem = function(key, value) {
                 if (key === 'user_balance') {
@@ -1059,7 +1058,7 @@
             loadActiveBonus();
         }
         
-        // ========== ИСТОРИЯ БОНУСОВ ==========
+
         function addBonusHistory(name, amount) {
             bonusHistory.unshift({
                 id: Date.now(),
@@ -1103,7 +1102,7 @@
             bonusHistoryEl.innerHTML = html;
         }
         
-        // ========== УВЕДОМЛЕНИЯ ==========
+ 
         function showNotification(title, message) {
             const notification = document.createElement('div');
             notification.className = 'notification show';
@@ -1122,7 +1121,7 @@
             }, 3000);
         }
         
-        // ========== ПРОФИЛЬ ==========
+
         let isProfileOpen = false;
         function toggleProfile() {
             const menu = document.getElementById('profileMenu');
@@ -1141,12 +1140,12 @@
             isProfileOpen = false;
         }
         
-        // ========== НАЗАД В МЕНЮ ==========
+
         function goBack() {
             window.location.href = 'index.html';
         }
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
         document.addEventListener('DOMContentLoaded', function() {
             initBonuses();
             
